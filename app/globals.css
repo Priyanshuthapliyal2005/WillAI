@@ -1,0 +1,1069 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --foreground-rgb: 0, 0, 0;
+  --background-start-rgb: 214, 219, 220;
+  --background-end-rgb: 255, 255, 255;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --foreground-rgb: 255, 255, 255;
+    --background-start-rgb: 0, 0, 0;
+    --background-end-rgb: 0, 0, 0;
+  }
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+.font-times {
+  font-family: 'Times New Roman', 'Times', serif;
+}
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 0 0% 3.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 3.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 3.9%;
+    --primary: 0 0% 9%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 0 0% 96.1%;
+    --secondary-foreground: 0 0% 9%;
+    --muted: 0 0% 96.1%;
+    --muted-foreground: 0 0% 45.1%;
+    --accent: 0 0% 96.1%;
+    --accent-foreground: 0 0% 9%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 89.8%;
+    --input: 0 0% 89.8%;
+    --ring: 0 0% 3.9%;
+    --chart-1: 12 76% 61%;
+    --chart-2: 173 58% 39%;
+    --chart-3: 197 37% 24%;
+    --chart-4: 43 74% 66%;
+    --chart-5: 27 87% 67%;
+    --radius: 0.5rem;
+  }
+  .dark {
+    --background: 0 0% 3.9%;
+    --foreground: 0 0% 98%;
+    --card: 0 0% 3.9%;
+    --card-foreground: 0 0% 98%;
+    --popover: 0 0% 3.9%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 0 0% 98%;
+    --primary-foreground: 0 0% 9%;
+    --secondary: 0 0% 14.9%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 0 0% 14.9%;
+    --muted-foreground: 0 0% 63.9%;
+    --accent: 0 0% 14.9%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 14.9%;
+    --input: 0 0% 14.9%;
+    --ring: 0 0% 83.1%;
+    --chart-1: 220 70% 50%;
+    --chart-2: 160 60% 45%;
+    --chart-3: 30 80% 55%;
+    --chart-4: 280 65% 60%;
+    --chart-5: 340 75% 55%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+/* Will Document Specific Styles */
+
+/* ===== WILL DOCUMENT STYLES ===== */
+
+/* Document Container */
+.will-document {
+  font-family: 'Times New Roman', 'Times', serif;
+  font-size: 14px;
+  line-height: 1.8;
+  color: hsl(var(--foreground));
+  background: hsl(var(--background));
+  max-width: 210mm; /* A4 width */
+  margin: 0 auto;
+  padding: 20mm;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  position: relative;
+}
+
+/* Document Header */
+.will-header {
+  text-align: center;
+  margin-bottom: 3rem;
+  padding-bottom: 2rem;
+  border-bottom: 3px double hsl(var(--border));
+}
+
+.will-title {
+  font-size: 2.5rem;
+  font-weight: bold;
+  margin-bottom: 1.5rem;
+  color: hsl(var(--primary));
+  letter-spacing: 0.1em;
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 8px;
+}
+
+.testator-name {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: hsl(var(--foreground));
+  margin-bottom: 0;
+  letter-spacing: 0.05em;
+}
+
+/* Section Styling */
+.will-section {
+  margin-bottom: 2.5rem;
+  page-break-inside: avoid;
+}
+
+.section-title {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: hsl(var(--primary));
+  margin-bottom: 1.5rem;
+  margin-top: 2rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-bottom: 1px solid hsl(var(--border));
+  padding-bottom: 0.75rem;
+}
+
+.subsection-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: hsl(var(--foreground));
+  margin-bottom: 1rem;
+  margin-top: 1.5rem;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.asset-subsection {
+  margin-bottom: 2rem;
+}
+
+/* Paragraph Styling */
+.text-paragraph {
+  font-size: 1rem;
+  color: hsl(var(--foreground));
+  text-align: justify;
+  margin-bottom: 1.5rem;
+  line-height: 1.8;
+}
+
+.text-paragraph p {
+  margin-bottom: 1rem;
+  text-indent: 2em;
+}
+
+.text-paragraph p:first-child {
+  text-indent: 0;
+}
+
+.text-paragraph ul {
+  margin: 1rem 0;
+  padding-left: 2rem;
+}
+
+.text-paragraph li {
+  margin-bottom: 0.5rem;
+  line-height: 1.6;
+}
+
+/* Table Styling */
+.beneficiary-table,
+.asset-table,
+.executor-table,
+.witness-table {
+  margin: 1.5rem 0;
+  overflow-x: auto;
+}
+
+.beneficiary-table table,
+.asset-table table,
+.executor-table table,
+.witness-table table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+  border: 2px solid hsl(var(--border));
+  background: hsl(var(--card));
+}
+
+.beneficiary-table th,
+.asset-table th,
+.executor-table th,
+.witness-table th {
+  background-color: hsl(var(--muted));
+  color: hsl(var(--foreground));
+  font-weight: bold;
+  padding: 1rem 0.75rem;
+  text-align: left;
+  border: 1px solid hsl(var(--border));
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+}
+
+.beneficiary-table td,
+.asset-table td,
+.executor-table td,
+.witness-table td {
+  padding: 0.75rem;
+  border: 1px solid hsl(var(--border));
+  color: hsl(var(--foreground));
+  vertical-align: top;
+  line-height: 1.4;
+}
+
+.beneficiary-table tr:nth-child(even),
+.asset-table tr:nth-child(even),
+.executor-table tr:nth-child(even),
+.witness-table tr:nth-child(even) {
+  background-color: hsl(var(--muted) / 0.3);
+}
+
+/* Signature Section */
+.signature-section {
+  margin: 3rem 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  align-items: end;
+}
+
+.testator-signature,
+.witness-signature {
+  text-align: center;
+}
+
+.execution-details {
+  text-align: left;
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.execution-details p {
+  margin-bottom: 0.5rem;
+}
+
+.signature-line {
+  margin: 2rem 0 1rem 0;
+  text-align: center;
+}
+
+.signature-placeholder {
+  width: 250px;
+  height: 2px;
+  background-color: hsl(var(--border));
+  margin: 0 auto 1rem auto;
+  border-radius: 1px;
+}
+
+.signature-label {
+  font-weight: 600;
+  font-size: 1rem;
+  margin-bottom: 0.25rem;
+  color: hsl(var(--foreground));
+}
+
+.signature-role {
+  font-size: 0.9rem;
+  color: hsl(var(--muted-foreground));
+  font-style: italic;
+  margin: 0;
+}
+
+/* Digital Signature Styles */
+.digital-signature {
+  margin: 2rem 0 1rem 0;
+  text-align: center;
+  padding: 1rem;
+  border: 2px solid hsl(var(--border));
+  border-radius: 8px;
+  background-color: hsl(var(--muted) / 0.1);
+}
+
+.digital-signature .signature-name {
+  font-weight: 700;
+  font-size: 1.1rem;
+  margin-bottom: 0.25rem;
+  color: hsl(var(--foreground));
+  font-family: 'Courier New', monospace;
+  letter-spacing: 1px;
+}
+
+.digital-signature .signature-role {
+  font-size: 0.9rem;
+  color: hsl(var(--muted-foreground));
+  font-style: italic;
+  margin: 0.25rem 0;
+}
+
+.digital-signature .signature-note {
+  font-size: 0.8rem;
+  color: hsl(var(--muted-foreground));
+  margin-top: 0.5rem;
+  font-style: italic;
+  opacity: 0.8;
+}
+
+/* AI Generated Document Styles */
+.will-document-ai {
+  max-width: 4xl;
+  margin: 0 auto;
+  background: hsl(var(--background));
+  border: 1px solid hsl(var(--border));
+  border-radius: 8px;
+  padding: 3rem;
+  font-family: 'Georgia', serif;
+  line-height: 1.6;
+  color: hsl(var(--foreground));
+}
+
+.will-document-ai h1, .will-document-ai h2, .will-document-ai h3 {
+  color: hsl(var(--foreground));
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+}
+
+.will-document-ai table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+}
+
+.will-document-ai th, .will-document-ai td {
+  border: 1px solid hsl(var(--border));
+  padding: 0.75rem;
+  text-align: left;
+}
+
+.will-document-ai th {
+  background-color: hsl(var(--muted));
+  font-weight: 600;
+}
+
+/* Witnesses Section */
+.witnesses-section {
+  margin-top: 2rem;
+}
+
+.witness-block {
+  border: 2px solid hsl(var(--border));
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  background-color: hsl(var(--card));
+  page-break-inside: avoid;
+}
+
+.witness-title {
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: hsl(var(--primary));
+  margin-bottom: 1rem;
+  text-align: center;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.witness-details {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 2rem;
+  align-items: start;
+}
+
+.witness-info p {
+  margin-bottom: 0.5rem;
+  font-size: 0.95rem;
+  line-height: 1.4;
+}
+
+.witness-info strong {
+  color: hsl(var(--primary));
+  font-weight: 600;
+}
+
+/* Footer */
+.will-footer {
+  margin-top: 3rem;
+  padding-top: 2rem;
+  border-top: 2px solid hsl(var(--border));
+  text-align: center;
+}
+
+.document-info {
+  font-size: 0.9rem;
+  color: hsl(var(--muted-foreground));
+  font-style: italic;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .will-document {
+    padding: 15mm;
+    font-size: 13px;
+  }
+  
+  .will-title {
+    font-size: 2rem;
+  }
+  
+  .testator-name {
+    font-size: 1.25rem;
+  }
+  
+  .signature-section {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  
+  .witness-details {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  
+  .beneficiary-table,
+  .asset-table,
+  .executor-table,
+  .witness-table {
+    font-size: 0.8rem;
+  }
+  
+  .beneficiary-table th,
+  .asset-table th,
+  .executor-table th,
+  .witness-table th {
+    padding: 0.5rem 0.25rem;
+    font-size: 0.75rem;
+  }
+  
+  .beneficiary-table td,
+  .asset-table td,
+  .executor-table td,
+  .witness-table td {
+    padding: 0.5rem 0.25rem;
+  }
+}
+
+/* Print Styles */
+@media print {
+  .will-document {
+    background: white !important;
+    color: black !important;
+    font-size: 12pt;
+    line-height: 1.6;
+    box-shadow: none;
+    border-radius: 0;
+    padding: 15mm;
+    max-width: none;
+    margin: 0;
+  }
+  
+  .will-title {
+    color: black !important;
+    font-size: 18pt;
+  }
+  
+  .testator-name {
+    color: black !important;
+    font-size: 14pt;
+  }
+  
+  .section-title {
+    color: black !important;
+    font-size: 12pt;
+    border-bottom: 1pt solid black !important;
+  }
+  
+  .subsection-title {
+    color: black !important;
+    font-size: 11pt;
+  }
+  
+  .text-paragraph {
+    font-size: 10pt;
+    color: black !important;
+  }
+  
+  .beneficiary-table th,
+  .asset-table th,
+  .executor-table th,
+  .witness-table th {
+    background-color: #f5f5f5 !important;
+    color: black !important;
+    border: 1pt solid black !important;
+  }
+  
+  .beneficiary-table td,
+  .asset-table td,
+  .executor-table td,
+  .witness-table td {
+    color: black !important;
+    border: 1pt solid black !important;
+  }
+  
+  .beneficiary-table table,
+  .asset-table table,
+  .executor-table table,
+  .witness-table table {
+    border: 2pt solid black !important;
+  }
+  
+  .signature-placeholder {
+    background-color: black !important;
+    height: 1pt;
+  }
+  
+  .witness-block {
+    border: 2pt solid black !important;
+    background-color: white !important;
+  }
+  
+  .will-header {
+    border-bottom: 3pt double black !important;
+  }
+  
+  .will-footer {
+    border-top: 2pt solid black !important;
+  }
+  
+  .signature-label,
+  .witness-info strong {
+    color: black !important;
+  }
+  
+  .signature-role,
+  .document-info {
+    color: #666 !important;
+  }
+  
+  /* Page breaks */
+  .will-section {
+    page-break-inside: avoid;
+  }
+  
+  .witness-block {
+    page-break-inside: avoid;
+  }
+  
+  .asset-table,
+  .beneficiary-table,
+  .executor-table {
+    page-break-inside: avoid;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .will-document {
+    border: 3px solid hsl(var(--foreground));
+  }
+  
+  .section-title {
+    border-bottom: 3px solid hsl(var(--foreground));
+  }
+  
+  .beneficiary-table th,
+  .asset-table th,
+  .executor-table th,
+  .witness-table th {
+    background-color: hsl(var(--foreground));
+    color: hsl(var(--background));
+    border: 2px solid hsl(var(--foreground));
+  }
+  
+  .beneficiary-table th,
+  .asset-table th,
+  .executor-table th,
+  .witness-table th {
+    border: 2px solid hsl(var(--foreground));
+  }
+  
+  .witness-block {
+    border: 3px solid hsl(var(--foreground));
+  }
+  
+  .signature-placeholder {
+    background-color: hsl(var(--foreground));
+    height: 3px;
+  }
+}
+
+/* Focus styles for accessibility */
+.will-document:focus {
+  outline: 3px solid hsl(var(--ring));
+  outline-offset: 2px;
+}
+
+/* Smooth scrolling for internal navigation */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Selection styling */
+.will-document ::selection {
+  background-color: hsl(var(--primary) / 0.2);
+  color: hsl(var(--foreground));
+}
+
+/* Dark mode adjustments */
+@media (prefers-color-scheme: dark) {
+  .will-document {
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  
+  .will-document {
+    transition: none;
+  }
+}
+
+/* Large text support */
+@media (min-resolution: 192dpi) {
+  .will-document {
+    font-size: 15px;
+  }
+  
+  .will-title {
+    font-size: 2.75rem;
+  }
+  
+  .testator-name {
+    font-size: 1.75rem;
+  }
+}
+
+/* Animation for smooth appearance */
+.will-document {
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Loading state */
+.will-document.loading {
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+.will-document.loading::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 40px;
+  height: 40px;
+  margin: -20px 0 0 -20px;
+  border: 4px solid hsl(var(--muted));
+  border-top: 4px solid hsl(var(--primary));
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Error state */
+.will-document.error {
+  border: 2px solid hsl(var(--destructive));
+  background-color: hsl(var(--destructive) / 0.05);
+}
+
+.will-document.error::before {
+  content: '⚠️ Error in document generation';
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: hsl(var(--destructive));
+  color: hsl(var(--destructive-foreground));
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+/* Success state */
+.will-document.success {
+  border: 2px solid hsl(var(--primary));
+}
+
+.will-document.success::before {
+  content: '✓ Document generated successfully';
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: hsl(var(--primary));
+  color: hsl(var(--primary-foreground));
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+/* Utility classes for theming */
+.will-document.theme-light {
+  --background: 0 0% 100%;
+  --foreground: 0 0% 3.9%;
+  --primary: 0 0% 9%;
+  --muted: 0 0% 96.1%;
+  --border: 0 0% 89.8%;
+  --card: 0 0% 100%;
+}
+
+.will-document.theme-dark {
+  --background: 0 0% 3.9%;
+  --foreground: 0 0% 98%;
+  --primary: 0 0% 98%;
+  --muted: 0 0% 14.9%;
+  --border: 0 0% 14.9%;
+  --card: 0 0% 3.9%;
+}
+
+.will-document.theme-sepia {
+  --background: 45 20% 95%;
+  --foreground: 45 20% 15%;
+  --primary: 45 60% 25%;
+  --muted: 45 15% 88%;
+  --border: 45 15% 80%;
+  --card: 45 25% 98%;
+}
+
+/* Enhanced table styling for better readability */
+.asset-table table,
+.beneficiary-table table,
+.executor-table table,
+.witness-table table {
+  table-layout: fixed;
+}
+
+.asset-table th:first-child,
+.beneficiary-table th:first-child,
+.executor-table th:first-child,
+.witness-table th:first-child {
+  width: 60px;
+}
+
+/* Enhanced spacing for better readability */
+.will-section + .will-section {
+  margin-top: 3rem;
+}
+
+.asset-subsection + .asset-subsection {
+  margin-top: 2.5rem;
+}
+
+/* Better list styling */
+.text-paragraph ol {
+  counter-reset: item;
+  padding-left: 0;
+}
+
+.text-paragraph ol > li {
+  display: block;
+  margin-bottom: 0.5rem;
+  padding-left: 2rem;
+  position: relative;
+}
+
+.text-paragraph ol > li:before {
+  content: counter(item, decimal) ".";
+  counter-increment: item;
+  position: absolute;
+  left: 0;
+  font-weight: bold;
+  color: hsl(var(--primary));
+}
+
+/* Enhanced emphasis styling */
+.text-paragraph strong {
+  color: hsl(var(--primary));
+  font-weight: 700;
+}
+
+.text-paragraph em {
+  font-style: italic;
+  color: hsl(var(--muted-foreground));
+}
+
+/* Better code styling if needed */
+.text-paragraph code {
+  background-color: hsl(var(--muted));
+  padding: 0.125rem 0.25rem;
+  border-radius: 0.25rem;
+  font-family: 'Courier New', monospace;
+  font-size: 0.9em;
+}
+
+/* Enhanced blockquote styling */
+.text-paragraph blockquote {
+  border-left: 4px solid hsl(var(--primary));
+  padding-left: 1rem;
+  margin: 1rem 0;
+  font-style: italic;
+  color: hsl(var(--muted-foreground));
+}
+
+/* Better hr styling */
+.will-document hr {
+  border: none;
+  height: 2px;
+  background: linear-gradient(to right, transparent, hsl(var(--border)), transparent);
+  margin: 2rem 0;
+}
+
+/* Enhanced link styling */
+.will-document a {
+  color: hsl(var(--primary));
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.will-document a:hover {
+  color: hsl(var(--primary) / 0.8);
+  text-decoration-thickness: 2px;
+}
+
+/* Better abbreviation styling */
+.will-document abbr {
+  text-decoration: underline dotted;
+  cursor: help;
+}
+
+/* Enhanced mark styling */
+.will-document mark {
+  background-color: hsl(var(--primary) / 0.2);
+  color: hsl(var(--foreground));
+  padding: 0.125rem 0.25rem;
+  border-radius: 0.25rem;
+}
+
+/* Better small text styling */
+.will-document small {
+  font-size: 0.875em;
+  color: hsl(var(--muted-foreground));
+}
+
+/* Enhanced sub and sup styling */
+.will-document sub,
+.will-document sup {
+  font-size: 0.75em;
+  line-height: 0;
+  position: relative;
+  vertical-align: baseline;
+}
+
+.will-document sup {
+  top: -0.5em;
+}
+
+.will-document sub {
+  bottom: -0.25em;
+}
+
+/* Better definition list styling */
+.will-document dl {
+  margin: 1rem 0;
+}
+
+.will-document dt {
+  font-weight: bold;
+  color: hsl(var(--primary));
+  margin-top: 1rem;
+}
+
+.will-document dd {
+  margin-left: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+/* Enhanced address styling */
+.will-document address {
+  font-style: normal;
+  line-height: 1.6;
+  margin: 1rem 0;
+  padding: 1rem;
+  background-color: hsl(var(--muted) / 0.3);
+  border-left: 4px solid hsl(var(--primary));
+  border-radius: 0 4px 4px 0;
+}
+
+/* Better time styling */
+.will-document time {
+  font-weight: 600;
+  color: hsl(var(--primary));
+}
+
+/* Enhanced kbd styling */
+.will-document kbd {
+  background-color: hsl(var(--muted));
+  border: 1px solid hsl(var(--border));
+  border-radius: 0.25rem;
+  padding: 0.125rem 0.25rem;
+  font-family: 'Courier New', monospace;
+  font-size: 0.875em;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+/* Better samp styling */
+.will-document samp {
+  background-color: hsl(var(--muted));
+  padding: 0.125rem 0.25rem;
+  border-radius: 0.25rem;
+  font-family: 'Courier New', monospace;
+  font-size: 0.9em;
+}
+
+/* Enhanced var styling */
+.will-document var {
+  font-style: italic;
+  font-weight: 600;
+  color: hsl(var(--primary));
+}
+
+/* Better details and summary styling */
+.will-document details {
+  margin: 1rem 0;
+  border: 1px solid hsl(var(--border));
+  border-radius: 0.5rem;
+  overflow: hidden;
+}
+
+.will-document summary {
+  background-color: hsl(var(--muted));
+  padding: 1rem;
+  cursor: pointer;
+  font-weight: 600;
+  color: hsl(var(--primary));
+}
+
+.will-document summary:hover {
+  background-color: hsl(var(--muted) / 0.8);
+}
+
+.will-document details[open] summary {
+  border-bottom: 1px solid hsl(var(--border));
+}
+
+.will-document details > *:not(summary) {
+  padding: 1rem;
+}
+
+/* Enhanced figure and figcaption styling */
+.will-document figure {
+  margin: 2rem 0;
+  text-align: center;
+}
+
+.will-document figcaption {
+  margin-top: 0.5rem;
+  font-size: 0.9em;
+  color: hsl(var(--muted-foreground));
+  font-style: italic;
+}
+
+/* Better progress styling */
+.will-document progress {
+  width: 100%;
+  height: 1rem;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  background-color: hsl(var(--muted));
+  border: none;
+}
+
+.will-document progress::-webkit-progress-bar {
+  background-color: hsl(var(--muted));
+  border-radius: 0.5rem;
+}
+
+.will-document progress::-webkit-progress-value {
+  background-color: hsl(var(--primary));
+  border-radius: 0.5rem;
+}
+
+.will-document progress::-moz-progress-bar {
+  background-color: hsl(var(--primary));
+  border-radius: 0.5rem;
+}
+
+/* Enhanced meter styling */
+.will-document meter {
+  width: 100%;
+  height: 1rem;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  background-color: hsl(var(--muted));
+  border: none;
+}
+
+.will-document meter::-webkit-meter-bar {
+  background-color: hsl(var(--muted));
+  border-radius: 0.5rem;
+}
+
+.will-document meter::-webkit-meter-optimum-value {
+  background-color: hsl(var(--primary));
+  border-radius: 0.5rem;
+}
+
+.will-document meter::-moz-meter-bar {
+  background-color: hsl(var(--primary));
+  border-radius: 0.5rem;
+}
