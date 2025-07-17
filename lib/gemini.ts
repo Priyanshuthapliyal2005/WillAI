@@ -173,7 +173,7 @@ Generate the complete HTML document now:
 
 export async function generateWillWithGemini(willData: WillData, language: string = 'en'): Promise<string> {
   try {
-    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" })
+    const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" })
     
     const prompt = `${LEGAL_WILL_PROMPT}
 
@@ -193,8 +193,20 @@ ${JSON.stringify(willData, null, 2)}`
       .trim()
     
     return cleanedHtml
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error generating will with Gemini:', error)
-    throw new Error('Failed to generate will document')
+    
+    // Check if it's a service overload error
+    if (error.status === 503 || error.message?.includes('overloaded')) {
+      throw new Error('GEMINI_OVERLOADED')
+    }
+    
+    // Check if it's an API key error
+    if (error.status === 401 || error.status === 403) {
+      throw new Error('GEMINI_AUTH_FAILED')
+    }
+    
+    // Generic error for other cases
+    throw new Error('GEMINI_FAILED')
   }
 }

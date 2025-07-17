@@ -9,7 +9,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
-import { Plus, Trash2, Save } from 'lucide-react'
+import { Plus, Trash2, Save, ChevronLeft, ChevronRight } from 'lucide-react'
 
 const witnessesFormSchema = z.object({
   witnesses: z.array(witnessSchema).min(2, 'At least two witnesses are required'),
@@ -21,9 +21,11 @@ interface WitnessesFormProps {
   willData?: any
   onSave: (data: any) => void
   isLoading: boolean
+  onPrevious?: () => void
+  canGoBack?: boolean
 }
 
-export function WitnessesForm({ willData, onSave, isLoading }: WitnessesFormProps) {
+export function WitnessesForm({ willData, onSave, isLoading, onPrevious, canGoBack }: WitnessesFormProps) {
   const {
     register,
     control,
@@ -161,10 +163,35 @@ export function WitnessesForm({ willData, onSave, isLoading }: WitnessesFormProp
             </p>
           )}
 
-          <Button type="submit" disabled={isLoading}>
-            <Save className="h-4 w-4 mr-2" />
-            {isLoading ? 'Saving...' : 'Save & Continue'}
-          </Button>
+          <div className="flex justify-between">
+            {canGoBack ? (
+              <Button
+                type="button"
+                variant="outline"
+                onClick={onPrevious}
+                disabled={isLoading}
+              >
+                <ChevronLeft className="h-4 w-4 mr-2" />
+                Previous
+              </Button>
+            ) : (
+              <div></div>
+            )}
+            
+            <Button type="submit" disabled={isLoading}>
+              {isLoading ? (
+                <>
+                  <Save className="h-4 w-4 mr-2 animate-spin" />
+                  Saving...
+                </>
+              ) : (
+                <>
+                  Save & Continue
+                  <ChevronRight className="h-4 w-4 ml-2" />
+                </>
+              )}
+            </Button>
+          </div>
         </form>
       </CardContent>
     </Card>

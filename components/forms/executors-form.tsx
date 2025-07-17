@@ -10,7 +10,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import { Checkbox } from '@/components/ui/checkbox'
-import { Plus, Trash2, Save } from 'lucide-react'
+import { Plus, Trash2, Save, ChevronLeft, ChevronRight } from 'lucide-react'
 
 const executorsFormSchema = z.object({
   executors: z.array(executorSchema).min(1, 'At least one executor is required'),
@@ -22,9 +22,11 @@ interface ExecutorsFormProps {
   willData?: any
   onSave: (data: any) => void
   isLoading: boolean
+  onPrevious?: () => void
+  canGoBack?: boolean
 }
 
-export function ExecutorsForm({ willData, onSave, isLoading }: ExecutorsFormProps) {
+export function ExecutorsForm({ willData, onSave, isLoading, onPrevious, canGoBack }: ExecutorsFormProps) {
   const {
     register,
     control,
@@ -180,10 +182,35 @@ export function ExecutorsForm({ willData, onSave, isLoading }: ExecutorsFormProp
             </p>
           )}
 
-          <Button type="submit" disabled={isLoading}>
-            <Save className="h-4 w-4 mr-2" />
-            {isLoading ? 'Saving...' : 'Save & Continue'}
-          </Button>
+          <div className="flex justify-between">
+            {canGoBack ? (
+              <Button
+                type="button"
+                variant="outline"
+                onClick={onPrevious}
+                disabled={isLoading}
+              >
+                <ChevronLeft className="h-4 w-4 mr-2" />
+                Previous
+              </Button>
+            ) : (
+              <div></div>
+            )}
+            
+            <Button type="submit" disabled={isLoading}>
+              {isLoading ? (
+                <>
+                  <Save className="h-4 w-4 mr-2 animate-spin" />
+                  Saving...
+                </>
+              ) : (
+                <>
+                  Save & Continue
+                  <ChevronRight className="h-4 w-4 ml-2" />
+                </>
+              )}
+            </Button>
+          </div>
         </form>
       </CardContent>
     </Card>

@@ -16,13 +16,45 @@ export async function POST(request: NextRequest) {
 
     // If data is provided directly (for immediate generation), use it
     if (data) {
-      const generatedHtml = await generateWillWithGemini(data, language)
+      // For English, just return success without AI generation (manual React component handles it)
+      if (language === 'en') {
+        return NextResponse.json({ 
+          success: true,
+          message: 'Will ready to display in English',
+          useManual: true,
+        })
+      }
       
-      return NextResponse.json({ 
-        success: true,
-        message: `Will generated successfully in ${language}`,
-        html: generatedHtml,
-      })
+      // For other languages, use Gemini for translation
+      try {
+        const generatedHtml = await generateWillWithGemini(data, language)
+        
+        return NextResponse.json({ 
+          success: true,
+          message: `Will generated successfully in ${language}`,
+          html: generatedHtml,
+        })
+      } catch (error: any) {
+        console.error('Gemini generation error:', error)
+        
+        // Enhanced error handling with specific error types
+        if (error.message === 'GEMINI_OVERLOADED') {
+          return NextResponse.json({ 
+            error: 'GEMINI_OVERLOADED',
+            message: 'AI service is temporarily overloaded. Please try again in a few minutes.'
+          }, { status: 503 })
+        } else if (error.message === 'GEMINI_AUTH_FAILED') {
+          return NextResponse.json({ 
+            error: 'GEMINI_AUTH_FAILED', 
+            message: 'AI service authentication failed. Please contact support.'
+          }, { status: 401 })
+        } else {
+          return NextResponse.json({ 
+            error: 'GEMINI_FAILED',
+            message: 'Failed to generate document in selected language. Please try again or use English version.'
+          }, { status: 500 })
+        }
+      }
     }
 
     // Otherwise, fetch from database (existing functionality)

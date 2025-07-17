@@ -102,18 +102,25 @@ export function WillFormWizard({ currentStep, willId, userId }: WillFormWizardPr
     },
   })
 
-  const handleNext = async (formData: any = {}) => {
-    // Save the current step data first
+  const handleSaveAndContinue = async (data: any) => {
     try {
-      await saveWillMutation.mutateAsync(formData)
-      // Navigate to next step after successful save
+      // Save the data
+      const result = await saveWillMutation.mutateAsync(data)
+      
+      // If save is successful, navigate to next step
       if (currentStep < 7) {
-        router.push(`/dashboard/${currentStep + 1}${willId ? `?willId=${willId}` : ''}`)
+        const nextStep = currentStep + 1
+        const newWillId = result?.willId || willId
+        router.push(`/dashboard/${nextStep}${newWillId ? `?willId=${newWillId}` : ''}`)
       }
     } catch (error) {
-      // Error is already handled in the mutation onError
       console.error('Failed to save and continue:', error)
+      // Error is already shown via toast in mutation onError
     }
+  }
+
+  const handleNext = async (formData: any = {}) => {
+    await handleSaveAndContinue(formData)
   }
 
   const handlePrevious = () => {
@@ -122,8 +129,9 @@ export function WillFormWizard({ currentStep, willId, userId }: WillFormWizardPr
     }
   }
 
-  const handleSave = (data: any) => {
-    saveWillMutation.mutate(data)
+  const handleSave = async (data: any) => {
+    // For form submissions, we want to save AND navigate
+    await handleSaveAndContinue(data)
   }
 
   const handleGenerateWill = async () => {
@@ -137,6 +145,8 @@ export function WillFormWizard({ currentStep, willId, userId }: WillFormWizardPr
       willData,
       onSave: handleSave,
       isLoading: saveWillMutation.isPending,
+      onPrevious: handlePrevious,
+      canGoBack: currentStep > 1,
     }
 
     switch (currentStep) {
@@ -189,41 +199,6 @@ export function WillFormWizard({ currentStep, willId, userId }: WillFormWizardPr
       <div className="min-h-[600px]">
         {renderStepContent()}
       </div>
-
-      {/* Navigation */}
-      {currentStep < 7 && (
-        <Card>
-          <CardContent className="pt-6">
-            <div className="flex justify-between">
-              <Button
-                variant="outline"
-                onClick={handlePrevious}
-                disabled={currentStep === 1}
-              >
-                <ChevronLeft className="h-4 w-4 mr-2" />
-                Previous
-              </Button>
-              
-              <Button 
-                onClick={handleNext}
-                disabled={saveWillMutation.isPending}
-              >
-                {saveWillMutation.isPending ? (
-                  <>
-                    <Save className="h-4 w-4 mr-2 animate-spin" />
-                    Saving...
-                  </>
-                ) : (
-                  <>
-                    Save & Continue
-                    <ChevronRight className="h-4 w-4 ml-2" />
-                  </>
-                )}
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
-      )}
     </div>
   )
 }

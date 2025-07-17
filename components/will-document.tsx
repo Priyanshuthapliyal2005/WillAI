@@ -506,7 +506,7 @@ export function WillDocument({ data }: WillDocumentProps) {
                   <div className="witness-signature">
                     <div className="digital-signature">
                       <p className="signature-name"><strong>{witness.name}</strong></p>
-                      <p className="signature-role">Witness {index + 1}</p>
+                      <p className="signature-role">(Witness {index + 1})</p>
                       <p className="signature-note">Digital Signature</p>
                     </div>
                   </div>

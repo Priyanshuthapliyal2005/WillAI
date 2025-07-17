@@ -6,7 +6,7 @@ import { Badge } from '@/components/ui/badge'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
-import { FileText, Users, Building, Gavel, Eye, Calendar, MapPin } from 'lucide-react'
+import { FileText, Users, Building, Gavel, Eye, Calendar, MapPin, ChevronLeft } from 'lucide-react'
 import { useState } from 'react'
 
 interface ReviewFormProps {
@@ -14,9 +14,11 @@ interface ReviewFormProps {
   onSave: (data: any) => void
   onGenerateWill: () => void
   isLoading: boolean
+  onPrevious?: () => void
+  canGoBack?: boolean
 }
 
-export function ReviewForm({ willData, onSave, onGenerateWill, isLoading }: ReviewFormProps) {
+export function ReviewForm({ willData, onSave, onGenerateWill, isLoading, onPrevious, canGoBack }: ReviewFormProps) {
   const [dateOfWill, setDateOfWill] = useState(new Date().toISOString().split('T')[0])
   const [placeOfWill, setPlaceOfWill] = useState('')
   const [specialInstructions, setSpecialInstructions] = useState('')
@@ -222,7 +224,21 @@ export function ReviewForm({ willData, onSave, onGenerateWill, isLoading }: Revi
             />
           </div>
 
-          <div className="flex justify-center mt-8">
+          <div className="flex justify-between mt-8">
+            {canGoBack ? (
+              <Button
+                type="button"
+                variant="outline"
+                onClick={onPrevious}
+                disabled={isLoading}
+              >
+                <ChevronLeft className="h-4 w-4 mr-2" />
+                Previous
+              </Button>
+            ) : (
+              <div></div>
+            )}
+            
             <Button 
               onClick={handleSaveAndGenerate} 
               disabled={isLoading || !placeOfWill.trim()} 

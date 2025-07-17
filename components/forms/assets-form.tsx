@@ -12,7 +12,7 @@ import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { Plus, Trash2, Save } from 'lucide-react'
+import { Plus, Trash2, Save, ChevronLeft, ChevronRight } from 'lucide-react'
 
 const assetsFormSchema = z.object({
   bankAccounts: z.array(bankAccountSchema).optional(),
@@ -29,9 +29,11 @@ interface AssetsFormProps {
   willData?: any
   onSave: (data: any) => void
   isLoading: boolean
+  onPrevious?: () => void
+  canGoBack?: boolean
 }
 
-export function AssetsForm({ willData, onSave, isLoading }: AssetsFormProps) {
+export function AssetsForm({ willData, onSave, isLoading, onPrevious, canGoBack }: AssetsFormProps) {
   const {
     register,
     control,
@@ -363,10 +365,35 @@ export function AssetsForm({ willData, onSave, isLoading }: AssetsFormProps) {
             </TabsContent>
           </Tabs>
 
-          <Button type="submit" disabled={isLoading}>
-            <Save className="h-4 w-4 mr-2" />
-            {isLoading ? 'Saving...' : 'Save & Continue'}
-          </Button>
+          <div className="flex justify-between">
+            {canGoBack ? (
+              <Button
+                type="button"
+                variant="outline"
+                onClick={onPrevious}
+                disabled={isLoading}
+              >
+                <ChevronLeft className="h-4 w-4 mr-2" />
+                Previous
+              </Button>
+            ) : (
+              <div></div>
+            )}
+            
+            <Button type="submit" disabled={isLoading}>
+              {isLoading ? (
+                <>
+                  <Save className="h-4 w-4 mr-2 animate-spin" />
+                  Saving...
+                </>
+              ) : (
+                <>
+                  Save & Continue
+                  <ChevronRight className="h-4 w-4 ml-2" />
+                </>
+              )}
+            </Button>
+          </div>
         </form>
       </CardContent>
     </Card>
