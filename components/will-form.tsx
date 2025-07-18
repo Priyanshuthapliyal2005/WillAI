@@ -32,9 +32,10 @@ const getLanguageName = (code: string): string => {
 
 interface WillFormProps {
   onSubmit: (data: WillData, language?: string) => void;
+  isGenerating?: boolean;
 }
 
-export function WillForm({ onSubmit }: WillFormProps) {
+export function WillForm({ onSubmit, isGenerating = false }: WillFormProps) {
   const [selectedLanguage, setSelectedLanguage] = useState('en');
   const [formData, setFormData] = useState<WillData>({
     testator: {
@@ -60,6 +61,7 @@ export function WillForm({ onSubmit }: WillFormProps) {
     witnesses: [],
     dateOfWill: new Date().toISOString().split('T')[0],
     placeOfWill: '',
+    residualClause: '', // Add this line to satisfy WillData type
   });
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -108,6 +110,7 @@ export function WillForm({ onSubmit }: WillFormProps) {
       accountType: '',
       branch: '',
       beneficiaryId: '',
+      sharePercentage: ''
     };
     setFormData(prev => ({
       ...prev,
@@ -740,8 +743,20 @@ export function WillForm({ onSubmit }: WillFormProps) {
           </Card>
 
           <div className="flex justify-end">
-            <Button type="submit" size="lg" className="px-8">
-              {selectedLanguage === 'en' ? 'Generate Will Document' : `Generate Will in ${getLanguageName(selectedLanguage)}`}
+            <Button 
+              type="submit" 
+              size="lg" 
+              className="px-8" 
+              disabled={isGenerating}
+            >
+              {isGenerating ? (
+                <div className="flex items-center gap-2">
+                  <div className="animate-spin rounded-full h-4 w-4 border-2 border-white/20 border-t-white"></div>
+                  Generating Will...
+                </div>
+              ) : (
+                selectedLanguage === 'en' ? 'Generate Will Document' : `Generate Will in ${getLanguageName(selectedLanguage)}`
+              )}
             </Button>
           </div>
         </TabsContent>

@@ -23,6 +23,7 @@ export const bankAccountSchema = z.object({
   accountType: z.string().min(2, "Account type is required"),
   branch: z.string().min(2, "Branch is required"),
   beneficiaryId: z.string().min(1, "Beneficiary must be selected"),
+  sharePercentage: z.string().optional(),
 })
 
 export const insurancePolicySchema = z.object({
@@ -31,13 +32,16 @@ export const insurancePolicySchema = z.object({
   policyType: z.string().min(2, "Policy type is required"),
   sumAssured: z.number().min(1, "Sum assured is required"),
   beneficiaryId: z.string().min(1, "Beneficiary must be selected"),
+  sharePercentage: z.string().optional(),
 })
 
 export const stockSchema = z.object({
   company: z.string().min(2, "Company name is required"),
   numberOfShares: z.number().min(1, "Number of shares is required"),
   certificateNumber: z.string().optional(),
+  accountNumber: z.string().optional(),
   beneficiaryId: z.string().min(1, "Beneficiary must be selected"),
+  sharePercentage: z.string().optional(),
 })
 
 export const mutualFundSchema = z.object({
@@ -45,23 +49,31 @@ export const mutualFundSchema = z.object({
   folioNumber: z.string().min(2, "Folio number is required"),
   units: z.number().min(0.01, "Units are required"),
   beneficiaryId: z.string().min(1, "Beneficiary must be selected"),
+  distributor: z.string().optional(),
+  accountNumber: z.string().optional(),
+  sharePercentage: z.string().optional(),
 })
 
 export const jewellerySchema = z.object({
+  type: z.string().min(2, "Jewellery type is required"),
   description: z.string().min(5, "Description is required"),
   estimatedValue: z.number().min(1, "Estimated value is required"),
   location: z.string().min(2, "Location is required"),
+  invoiceNumber: z.string().optional(),
   beneficiaryId: z.string().min(1, "Beneficiary must be selected"),
+  sharePercentage: z.string().optional(),
 })
 
 export const immovableAssetSchema = z.object({
   propertyType: z.string().min(2, "Property type is required"),
+  name: z.string().min(2, "Property name is required"),
   description: z.string().min(5, "Description is required"),
   location: z.string().min(5, "Location is required"),
   surveyNumber: z.string().optional(),
   registrationNumber: z.string().optional(),
   estimatedValue: z.number().min(1, "Estimated value is required"),
   beneficiaryId: z.string().min(1, "Beneficiary must be selected"),
+  sharePercentage: z.string().optional(),
 })
 
 export const executorSchema = z.object({

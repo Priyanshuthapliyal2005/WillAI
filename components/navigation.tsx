@@ -33,7 +33,7 @@ export function Navigation() {
           {/* Logo */}
           <Link href="/" className="flex items-center space-x-2">
             <FileText className="h-6 w-6 text-green-600" />
-            <span className="text-xl font-bold">Will Generator</span>
+            <span className="text-xl font-bold">Will AI</span>
           </Link>
 
           {/* Desktop Navigation */}

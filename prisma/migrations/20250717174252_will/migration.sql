@@ -114,6 +114,7 @@ CREATE TABLE "BankAccount" (
     "accountType" TEXT NOT NULL,
     "branch" TEXT NOT NULL,
     "beneficiaryId" TEXT NOT NULL,
+    "sharePercentage" TEXT NOT NULL DEFAULT '100%',
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
@@ -129,6 +130,7 @@ CREATE TABLE "InsurancePolicy" (
     "policyType" TEXT NOT NULL,
     "sumAssured" DOUBLE PRECISION NOT NULL,
     "beneficiaryId" TEXT NOT NULL,
+    "sharePercentage" TEXT NOT NULL DEFAULT '100%',
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
@@ -142,7 +144,9 @@ CREATE TABLE "Stock" (
     "company" TEXT NOT NULL,
     "numberOfShares" INTEGER NOT NULL,
     "certificateNumber" TEXT,
+    "accountNumber" TEXT,
     "beneficiaryId" TEXT NOT NULL,
+    "sharePercentage" TEXT NOT NULL DEFAULT '100%',
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
@@ -156,7 +160,10 @@ CREATE TABLE "MutualFund" (
     "fundName" TEXT NOT NULL,
     "folioNumber" TEXT NOT NULL,
     "units" DOUBLE PRECISION NOT NULL,
+    "distributor" TEXT,
+    "accountNumber" TEXT,
     "beneficiaryId" TEXT NOT NULL,
+    "sharePercentage" TEXT NOT NULL DEFAULT '100%',
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
@@ -167,10 +174,13 @@ CREATE TABLE "MutualFund" (
 CREATE TABLE "Jewellery" (
     "id" TEXT NOT NULL,
     "willId" TEXT NOT NULL,
+    "type" TEXT,
     "description" TEXT NOT NULL,
     "estimatedValue" DOUBLE PRECISION NOT NULL,
     "location" TEXT NOT NULL,
+    "invoiceNumber" TEXT,
     "beneficiaryId" TEXT NOT NULL,
+    "sharePercentage" TEXT NOT NULL DEFAULT '100%',
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
@@ -182,12 +192,14 @@ CREATE TABLE "ImmovableAsset" (
     "id" TEXT NOT NULL,
     "willId" TEXT NOT NULL,
     "propertyType" TEXT NOT NULL,
+    "name" TEXT,
     "description" TEXT NOT NULL,
     "location" TEXT NOT NULL,
     "surveyNumber" TEXT,
     "registrationNumber" TEXT,
     "estimatedValue" DOUBLE PRECISION NOT NULL,
     "beneficiaryId" TEXT NOT NULL,
+    "sharePercentage" TEXT NOT NULL DEFAULT '100%',
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
@@ -225,6 +237,19 @@ CREATE TABLE "Witness" (
     CONSTRAINT "Witness_pkey" PRIMARY KEY ("id")
 );
 
+-- CreateTable
+CREATE TABLE "DeleteOTP" (
+    "id" TEXT NOT NULL,
+    "willId" TEXT NOT NULL,
+    "otp" TEXT NOT NULL,
+    "expiresAt" TIMESTAMP(3) NOT NULL,
+    "attempts" INTEGER NOT NULL DEFAULT 0,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "DeleteOTP_pkey" PRIMARY KEY ("id")
+);
+
 -- CreateIndex
 CREATE UNIQUE INDEX "Account_provider_providerAccountId_key" ON "Account"("provider", "providerAccountId");
 
@@ -242,6 +267,9 @@ CREATE UNIQUE INDEX "VerificationToken_identifier_token_key" ON "VerificationTok
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Testator_willId_key" ON "Testator"("willId");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "DeleteOTP_willId_key" ON "DeleteOTP"("willId");
 
 -- AddForeignKey
 ALTER TABLE "Account" ADD CONSTRAINT "Account_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
@@ -281,3 +309,6 @@ ALTER TABLE "Executor" ADD CONSTRAINT "Executor_willId_fkey" FOREIGN KEY ("willI
 
 -- AddForeignKey
 ALTER TABLE "Witness" ADD CONSTRAINT "Witness_willId_fkey" FOREIGN KEY ("willId") REFERENCES "Will"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "DeleteOTP" ADD CONSTRAINT "DeleteOTP_willId_fkey" FOREIGN KEY ("willId") REFERENCES "Will"("id") ON DELETE CASCADE ON UPDATE CASCADE;

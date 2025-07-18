@@ -81,6 +81,7 @@ model Will {
   immovableAssets  ImmovableAsset[]
   executors        Executor[]
   witnesses        Witness[]
+  deleteOTP        DeleteOTP?
   
   // Guardian information
   guardianName     String?
@@ -145,6 +146,7 @@ model BankAccount {
   accountType   String
   branch        String
   beneficiaryId String // Reference to beneficiary by ID
+  sharePercentage String @default("100%")
   
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
@@ -160,6 +162,7 @@ model InsurancePolicy {
   policyType    String
   sumAssured    Float
   beneficiaryId String // Reference to beneficiary by ID
+  sharePercentage String @default("100%")
   
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
@@ -173,7 +176,9 @@ model Stock {
   company          String
   numberOfShares   Int
   certificateNumber String?
+  accountNumber    String?
   beneficiaryId    String // Reference to beneficiary by ID
+  sharePercentage  String @default("100%")
   
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt
@@ -187,7 +192,10 @@ model MutualFund {
   fundName      String
   folioNumber   String
   units         Float
+  distributor   String?
+  accountNumber String?
   beneficiaryId String // Reference to beneficiary by ID
+  sharePercentage String @default("100%")
   
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
@@ -198,10 +206,13 @@ model Jewellery {
   willId         String
   will           Will   @relation(fields: [willId], references: [id], onDelete: Cascade)
   
+  type           String?
   description    String @db.Text
   estimatedValue Float
   location       String
+  invoiceNumber  String?
   beneficiaryId  String // Reference to beneficiary by ID
+  sharePercentage String @default("100%")
   
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
@@ -213,12 +224,14 @@ model ImmovableAsset {
   will               Will   @relation(fields: [willId], references: [id], onDelete: Cascade)
   
   propertyType       String
+  name               String?
   description        String @db.Text
   location           String @db.Text
   surveyNumber       String?
   registrationNumber String?
   estimatedValue     Float
   beneficiaryId      String // Reference to beneficiary by ID
+  sharePercentage    String @default("100%")
   
   createdAt          DateTime @default(now())
   updatedAt          DateTime @updatedAt
@@ -259,4 +272,15 @@ enum WillStatus {
   DRAFT
   COMPLETED
   FINALIZED
+}
+
+model DeleteOTP {
+  id        String   @id @default(cuid())
+  willId    String   @unique
+  will      Will     @relation(fields: [willId], references: [id], onDelete: Cascade)
+  otp       String
+  expiresAt DateTime
+  attempts  Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

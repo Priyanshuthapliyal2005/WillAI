@@ -17,6 +17,7 @@ export interface Beneficiary {
 }
 
 export interface BankAccount {
+  sharePercentage: string;
   id: string;
   bankName: string;
   accountNumber: string;
@@ -26,6 +27,7 @@ export interface BankAccount {
 }
 
 export interface InsurancePolicy {
+  sharePercentage: string;
   id: string;
   policyNumber: string;
   company: string;
@@ -35,6 +37,8 @@ export interface InsurancePolicy {
 }
 
 export interface Stock {
+  accountNumber: string | undefined;
+  sharePercentage: string;
   id: string;
   company: string;
   numberOfShares: number;
@@ -43,6 +47,9 @@ export interface Stock {
 }
 
 export interface MutualFund {
+  distributor: string;
+  accountNumber: string;
+  sharePercentage: string;
   id: string;
   fundName: string;
   folioNumber: string;
@@ -51,6 +58,9 @@ export interface MutualFund {
 }
 
 export interface Jewellery {
+  type: string;
+  invoiceNumber: string;
+  sharePercentage: string;
   id: string;
   description: string;
   estimatedValue: number;
@@ -59,6 +69,8 @@ export interface Jewellery {
 }
 
 export interface ImmovableAsset {
+  name: string;
+  sharePercentage: string;
   id: string;
   propertyType: string;
   description: string;
@@ -97,6 +109,7 @@ export interface Witness {
 }
 
 export interface WillData {
+  residualClause: string;
   testator: PersonalInfo;
   beneficiaries: Beneficiary[];
   movableAssets: {
@@ -110,6 +123,7 @@ export interface WillData {
   };
   immovableAssets: ImmovableAsset[];
   guardianClause?: {
+    condition: string;
     guardian: Guardian;
     minorChildren: string[];
   };

@@ -2,7 +2,8 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
-import { generateWillWithGemini, type WillData } from '@/lib/gemini'
+import { generateWillHTML } from '@/lib/will-generator'
+import { WillData } from '@/types/will-types'
 
 export async function POST(
   request: NextRequest,
@@ -57,8 +58,9 @@ export async function POST(
       return NextResponse.json({ error: 'At least two witnesses are required' }, { status: 400 })
     }
 
-    // Transform data for Gemini
+    // Transform data for Will AI with proper types
     const willData: WillData = {
+      residualClause: (will as any).residualClause || "All remaining assets not specifically mentioned in this will shall be distributed equally among all named beneficiaries.",
       testator: {
         fullName: will.testator.fullName,
         age: will.testator.age,
@@ -66,7 +68,7 @@ export async function POST(
         address: will.testator.address,
         idNumber: will.testator.idNumber,
       },
-      beneficiaries: will.beneficiaries.map(b => ({
+      beneficiaries: will.beneficiaries.map((b: any) => ({
         id: b.id,
         name: b.name,
         relation: b.relation,
@@ -76,48 +78,59 @@ export async function POST(
         percentage: b.percentage || undefined,
       })),
       movableAssets: {
-        bankAccounts: will.bankAccounts.map(a => ({
+        bankAccounts: will.bankAccounts.map((a: any) => ({
           id: a.id,
           bankName: a.bankName,
           accountNumber: a.accountNumber,
           accountType: a.accountType,
           branch: a.branch,
           beneficiaryId: a.beneficiaryId,
+          sharePercentage: a.sharePercentage || "100%",
         })),
-        insurancePolicies: will.insurancePolicies.map(p => ({
+        insurancePolicies: will.insurancePolicies.map((p: any) => ({
           id: p.id,
           policyNumber: p.policyNumber,
           company: p.company,
           policyType: p.policyType,
           sumAssured: p.sumAssured,
           beneficiaryId: p.beneficiaryId,
+          sharePercentage: p.sharePercentage || "100%",
         })),
-        stocks: will.stocks.map(s => ({
+        stocks: will.stocks.map((s: any) => ({
           id: s.id,
           company: s.company,
           numberOfShares: s.numberOfShares,
           certificateNumber: s.certificateNumber || undefined,
           beneficiaryId: s.beneficiaryId,
+          sharePercentage: s.sharePercentage || "100%",
+          accountNumber: s.accountNumber || "",
         })),
-        mutualFunds: will.mutualFunds.map(f => ({
+        mutualFunds: will.mutualFunds.map((f: any) => ({
           id: f.id,
           fundName: f.fundName,
           folioNumber: f.folioNumber,
           units: f.units,
           beneficiaryId: f.beneficiaryId,
+          distributor: f.distributor || "N/A",
+          sharePercentage: f.sharePercentage || "100%",
+          accountNumber: f.accountNumber || "",
         })),
       },
       physicalAssets: {
-        jewellery: will.jewellery.map(j => ({
+        jewellery: will.jewellery.map((j: any) => ({
           id: j.id,
+          type: j.type || "",
+          invoiceNumber: j.invoiceNumber || "",
           description: j.description,
           estimatedValue: j.estimatedValue,
           location: j.location,
           beneficiaryId: j.beneficiaryId,
+          sharePercentage: j.sharePercentage || "100%",
         })),
       },
-      immovableAssets: will.immovableAssets.map(a => ({
+      immovableAssets: will.immovableAssets.map((a: any) => ({
         id: a.id,
+        name: a.name || "",
         propertyType: a.propertyType,
         description: a.description,
         location: a.location,
@@ -125,8 +138,10 @@ export async function POST(
         registrationNumber: a.registrationNumber || undefined,
         estimatedValue: a.estimatedValue,
         beneficiaryId: a.beneficiaryId,
+        sharePercentage: a.sharePercentage || "100%",
       })),
       guardianClause: will.guardianName ? {
+        condition: (will as any).guardianCondition || "In the event of my death and the existence of minor children",
         guardian: {
           name: will.guardianName,
           relation: will.guardianRelation || '',
@@ -137,7 +152,7 @@ export async function POST(
         minorChildren: will.minorChildren || [],
       } : undefined,
       liabilities: will.liabilities || [],
-      executors: will.executors.map(e => ({
+      executors: will.executors.map((e: any) => ({
         id: e.id,
         name: e.name,
         relation: e.relation,
@@ -146,7 +161,7 @@ export async function POST(
         email: e.email || undefined,
         isPrimary: e.isPrimary,
       })),
-      witnesses: will.witnesses.map(w => ({
+      witnesses: will.witnesses.map((w: any) => ({
         id: w.id,
         name: w.name,
         address: w.address,
@@ -159,8 +174,8 @@ export async function POST(
       specialInstructions: will.specialInstructions || undefined,
     }
 
-    // Generate will with Gemini
-    const generatedHtml = await generateWillWithGemini(willData)
+    // Generate will using manual generator for consistent formatting
+    const generatedHtml = generateWillHTML(willData)
 
     // Update will with generated content
     await prisma.will.update({

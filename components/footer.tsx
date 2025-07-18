@@ -8,71 +8,25 @@ export function Footer() {
   return (
     <footer className="bg-slate-900 text-white">
       <div className="container mx-auto px-4 py-12">
-        <div className="grid md:grid-cols-4 gap-8">
+        <div className="grid md:grid-cols-3 gap-8">
           {/* Brand */}
           <div className="space-y-4">
             <div className="flex items-center space-x-2">
               <FileText className="h-6 w-6 text-green-600" />
-              <span className="text-xl font-bold">Will Generator</span>
+              <span className="text-xl font-bold">Will AI</span>
             </div>
             <p className="text-sm text-gray-400">
-              Create legally binding wills with professional guidance and security.
+              Create your legal will online with AI-powered guidance and security.
             </p>
-            <div className="flex items-center gap-4 text-xs text-gray-500">
-              <div className="flex items-center gap-1">
-                <Shield className="w-3 h-3" />
-                <span>256-bit SSL</span>
-              </div>
-              <div className="flex items-center gap-1">
-                <CheckCircle className="w-3 h-3" />
-                <span>Legal Review</span>
-              </div>
-              <div className="flex items-center gap-1">
-                <Users className="w-3 h-3" />
-                <span>Family Focused</span>
-              </div>
-            </div>
           </div>
 
-          {/* Legal */}
+          {/* Quick Links */}
           <div>
-            <h4 className="font-semibold text-white mb-4">Legal</h4>
-            <ul className="space-y-2 text-sm text-gray-400">
-              <li>
-                <Link href="/terms" className="hover:text-white transition-colors">
-                  Terms of Service
-                </Link>
-              </li>
-              <li>
-                <Link href="/privacy" className="hover:text-white transition-colors">
-                  Privacy Policy
-                </Link>
-              </li>
-              <li>
-                <Link href="/cookies" className="hover:text-white transition-colors">
-                  Cookie Policy
-                </Link>
-              </li>
-              <li>
-                <Link href="/disclaimers" className="hover:text-white transition-colors">
-                  Legal Disclaimers
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          {/* Product */}
-          <div>
-            <h4 className="font-semibold text-white mb-4">Product</h4>
+            <h4 className="font-semibold text-white mb-4">Quick Links</h4>
             <ul className="space-y-2 text-sm text-gray-400">
               <li>
                 <Link href="/#how-it-works" className="hover:text-white transition-colors">
                   How It Works
-                </Link>
-              </li>
-              <li>
-                <Link href="/#pricing" className="hover:text-white transition-colors">
-                  Pricing
                 </Link>
               </li>
               <li>
@@ -81,36 +35,41 @@ export function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/reviews" className="hover:text-white transition-colors">
-                  Reviews
+                <Link href="/#faq" className="hover:text-white transition-colors">
+                  FAQ
+                </Link>
+              </li>
+              <li>
+                <Link href="/privacy" className="hover:text-white transition-colors">
+                  Privacy Policy
                 </Link>
               </li>
             </ul>
           </div>
 
-          {/* Resources */}
+          {/* Contact & Social */}
           <div>
-            <h4 className="font-semibold text-white mb-4">Resources</h4>
+            <h4 className="font-semibold text-white mb-4">Contact & Social</h4>
             <ul className="space-y-2 text-sm text-gray-400">
               <li>
-                <Link href="/guide" className="hover:text-white transition-colors">
-                  Will Guide
-                </Link>
+                <a href="https://linkedin.com/in/priyanshu-thapliyal/" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">
+                  LinkedIn: linkedin.com/in/priyanshu-thapliyal
+                </a>
               </li>
               <li>
-                <Link href="/estate-planning" className="hover:text-white transition-colors">
-                  Estate Planning
-                </Link>
+                <a href="https://github.com/Priyanshuthapliyal2005" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">
+                  GitHub: Priyanshuthapliyal2005
+                </a>
               </li>
               <li>
-                <Link href="/articles" className="hover:text-white transition-colors">
-                  Legal Articles
-                </Link>
+                <a href="https://priyanshuthapliyal.me/" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">
+                  Website: priyanshuthapliyal.me
+                </a>
               </li>
               <li>
-                <Link href="/#faq" className="hover:text-white transition-colors">
-                  FAQ
-                </Link>
+                <a href="mailto:priyanshuthapliyal2005@gmail.com" className="hover:text-white transition-colors">
+                  Email: priyanshuthapliyal2005@gmail.com
+                </a>
               </li>
             </ul>
           </div>
@@ -122,17 +81,8 @@ export function Footer() {
         <div className="flex flex-col md:flex-row justify-between items-center gap-4">
           <div className="text-center md:text-left">
             <p className="text-sm text-gray-400">
-              © 2024 Will Generator. All rights reserved.
+              © 2025 Will AI. All rights reserved.
             </p>
-            <p className="text-xs text-gray-500 mt-1">
-              Professional legal document generation platform
-            </p>
-          </div>
-          
-          <div className="flex flex-col md:flex-row items-center gap-4 text-xs text-gray-500">
-            <span>1-855-751-5342</span>
-            <span>help@willgenerator.com</span>
-            <span>Available Monday-Friday, 9AM-5PM EST</span>
           </div>
         </div>
 

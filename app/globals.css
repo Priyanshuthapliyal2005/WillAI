@@ -1,3 +1,23 @@
+/* Multi-line ellipsis for testimonial text */
+.testimonial-ellipsis {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-height: 3.6em;
+}
+/* Marquee animation for testimonials */
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+.animate-marquee {
+  animation: marquee 40s linear infinite;
+}
+.animate-marquee:hover {
+  animation-play-state: paused;
+}
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -100,16 +120,42 @@ html {
   line-height: 1.8;
   color: hsl(var(--foreground));
   background: hsl(var(--background));
-  max-width: 210mm; /* A4 width */
+  max-width: 50%; /* Increased from 100% for better margins */
   width: 100%;
   margin: 0 auto;
-  padding: 20mm;
+  padding: 1.5rem;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
   position: relative;
   overflow-wrap: break-word;
   word-wrap: break-word;
   box-sizing: border-box;
+  -webkit-hyphens: auto;
+  hyphens: auto;
+  white-space: normal;
+}
+
+/* Container wrapper for responsive behavior */
+.will-document-container {
+  width: 100%;
+  max-width: 1200px; /* Added max-width for better centering */
+  margin: 0 auto; /* Center the container */
+  overflow-x: auto;
+  padding: 0.5rem;
+}
+
+@media (min-width: 1025px) {
+  .will-document-container {
+    padding: 1rem;
+  }
+}
+
+/* Desktop specific styles */
+@media (min-width: 1025px) {
+  .will-document {
+    max-width: 280mm; /* Increased from 210mm for better preview width */
+    padding: 20mm;
+  }
 }
 
 /* Document Header */
@@ -178,11 +224,22 @@ html {
   text-align: justify;
   margin-bottom: 1.5rem;
   line-height: 1.8;
+  word-break: break-word;
+  -webkit-hyphens: auto;
+  hyphens: auto;
+}
+
+@media (max-width: 768px) {
+  .text-paragraph {
+    font-size: 0.9rem;
+    text-align: left;
+    line-height: 1.6;
+  }
 }
 
 .text-paragraph p {
   margin-bottom: 1rem;
-  text-indent: 2em;
+  text-indent: 0;
 }
 
 .text-paragraph p:first-child {
@@ -223,6 +280,16 @@ html {
   table-layout: auto;
 }
 
+@media (max-width: 768px) {
+  .beneficiary-table table,
+  .asset-table table,
+  .executor-table table,
+  .witness-table table {
+    table-layout: fixed;
+    min-width: 100%;
+  }
+}
+
 .beneficiary-table th,
 .asset-table th,
 .executor-table th,
@@ -259,15 +326,14 @@ html {
 /* Signature Section */
 .signature-section {
   margin: 3rem 0;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 3rem;
-  align-items: end;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.testator-signature,
-.witness-signature {
+.testator-signature {
   text-align: center;
+  max-width: 400px;
 }
 
 .execution-details {
@@ -303,8 +369,76 @@ html {
 .signature-role {
   font-size: 0.9rem;
   color: hsl(var(--muted-foreground));
-  font-style: italic;
-  margin: 0;
+  margin: 0.25rem 0;
+}
+
+/* Witnesses Section */
+.witnesses-section {
+  margin-top: 2rem;
+}
+
+.witness-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+@media (max-width: 768px) {
+  .witness-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.witness-block {
+  border: 2px solid hsl(var(--border));
+  border-radius: 8px;
+  padding: 1.5rem;
+  background-color: hsl(var(--card));
+  page-break-inside: avoid;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+.witness-title {
+  font-size: 1rem;
+  font-weight: bold;
+  color: hsl(var(--primary));
+  margin-bottom: 1rem;
+  text-align: left;
+}
+
+.witness-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.witness-signature-area {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.witness-signature-area .signature-placeholder {
+  width: 200px;
+  margin: 0 auto 0.5rem auto;
+}
+
+.witness-details-block {
+  font-size: 0.9rem;
+  line-height: 1.4;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+.witness-details-block p {
+  margin-bottom: 0.4rem;
+  word-wrap: break-word;
+}
+
+.witness-details-block strong {
+  color: hsl(var(--primary));
+  font-weight: 600;
 }
 
 /* Digital Signature Styles */
@@ -312,51 +446,168 @@ html {
 .digital-signature {
   margin: 2rem 0 1rem 0;
   text-align: center;
-  padding: 1.5rem;
-  border: 2px solid hsl(var(--border));
-  border-radius: 8px;
-  background-color: hsl(var(--muted) / 0.1);
-  min-height: 100px;
+  padding: 1.5rem 1rem;
+  border: 3px solid hsl(var(--primary));
+  border-radius: 12px;
+  background: linear-gradient(135deg, hsl(var(--background)) 0%, hsl(var(--muted) / 0.3) 100%);
+  min-height: 120px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   position: relative;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.digital-signature:before {
+  content: "✒️";
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 1.5rem;
+  opacity: 0.6;
+}
+
+/* Execution Section Styles */
+.execution-content {
+  page-break-inside: avoid;
+  margin-top: 2rem;
+}
+
+.execution-layout {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 2rem;
+  margin-top: 1rem;
+}
+
+.execution-left {
+  flex: 1;
+  max-width: 60%;
+}
+
+.execution-left p {
+  margin: 0;
+  line-height: 1.6;
+}
+
+.execution-right {
+  flex: 1;
+  max-width: 40%;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.signature-section {
+  text-align: right;
+}
+
+.signature-label {
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+  color: hsl(var(--muted-foreground));
+}
+
+.testator-signature-block {
+  border-top: 1px solid hsl(var(--border));
+  padding-top: 0.5rem;
+  margin-top: 1rem;
+}
+
+.testator-name {
+  font-weight: bold;
+  font-size: 1rem;
+  margin-bottom: 0.25rem;
+}
+
+.testator-subtitle {
+  font-weight: bold;
+  font-size: 0.9rem;
+}
+
+.execution-details {
+  text-align: right;
+}
+
+.detail-row {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 0.5rem;
+  gap: 1rem;
+}
+
+.detail-label {
+  font-weight: bold;
+}
+
+.detail-value {
+  min-width: 120px;
+}
+
+/* Responsive layout for execution */
+@media (max-width: 768px) {
+  .execution-layout {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .execution-left,
+  .execution-right {
+    max-width: 100%;
+  }
+  
+  .signature-section,
+  .execution-details {
+    text-align: left;
+  }
+  
+  .detail-row {
+    justify-content: flex-start;
+  }
 }
 
 .digital-signature .signature-name {
   font-weight: 700;
-  font-size: 1.3rem;
+  font-size: 1.4rem;
   margin-bottom: 0.5rem;
   color: hsl(var(--primary));
-  font-family: 'Brush Script MT', cursive, serif;
+  font-family: 'Brush Script MT', 'Lucida Handwriting', cursive;
   letter-spacing: 1px;
   line-height: 1.4;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
 }
 
 .digital-signature .signature-role {
-  font-size: 0.9rem;
+  font-size: 1rem;
   color: hsl(var(--muted-foreground));
   font-style: italic;
   margin: 0.25rem 0;
-  font-weight: 500;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .digital-signature .signature-note {
   font-size: 0.8rem;
   color: hsl(var(--muted-foreground));
-  margin-top: 0.5rem;
+  margin-top: 0.75rem;
   font-style: italic;
   opacity: 0.8;
   border-top: 1px dashed hsl(var(--border));
   padding-top: 0.5rem;
+  font-weight: 500;
 }
 
 /* AI Generated Document Styles */
 .will-document-ai {
-  max-width: 210mm; /* Match A4 width */
+  max-width: 100%;
   width: 100%;
   margin: 0 auto;
   background: hsl(var(--background));
   border: 1px solid hsl(var(--border));
   border-radius: 8px;
-  padding: 20mm;
+  padding: 1.5rem;
   font-family: 'Times New Roman', Georgia, serif;
   font-size: 14px;
   line-height: 1.8;
@@ -365,6 +616,14 @@ html {
   overflow-wrap: break-word;
   word-wrap: break-word;
   box-sizing: border-box;
+}
+
+/* Desktop specific styles for AI document */
+@media (min-width: 1025px) {
+  .will-document-ai {
+    max-width: 210mm; /* A4 width only on large screens */
+    padding: 20mm;
+  }
 }
 
 .will-document-ai h1 {
@@ -406,8 +665,15 @@ html {
   font-weight: 600;
 }
 
-/* Witnesses Section */
+/* Witnesses Section - Updated */
 .witnesses-section {
+  margin-top: 2rem;
+}
+
+.witness-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
   margin-top: 2rem;
 }
 
@@ -415,35 +681,102 @@ html {
   border: 2px solid hsl(var(--border));
   border-radius: 8px;
   padding: 1.5rem;
-  margin-bottom: 2rem;
   background-color: hsl(var(--card));
   page-break-inside: avoid;
 }
 
 .witness-title {
-  font-size: 1.1rem;
+  font-size: 1rem;
   font-weight: bold;
   color: hsl(var(--primary));
   margin-bottom: 1rem;
+  text-align: left;
+}
+
+.witness-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.witness-signature-area {
   text-align: center;
-  text-decoration: underline;
-  text-underline-offset: 4px;
+  margin-bottom: 1rem;
 }
 
-.witness-details {
-  display: grid;
-  grid-template-columns: 2fr 1fr;
-  gap: 2rem;
-  align-items: start;
+.witness-signature-area .signature-placeholder {
+  width: 200px;
+  margin: 0 auto 0.5rem auto;
 }
 
-.witness-info p {
-  margin-bottom: 0.5rem;
-  font-size: 0.95rem;
+.witness-details-block {
+  font-size: 0.9rem;
   line-height: 1.4;
 }
 
-.witness-info strong {
+.witness-details-block p {
+  margin-bottom: 0.4rem;
+}
+
+.witness-details-block strong {
+  color: hsl(var(--primary));
+  font-weight: 600;
+}
+
+/* Witness Signatures Section */
+.witness-signatures {
+  margin-top: 2rem;
+  page-break-inside: avoid;
+}
+
+.signature-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  margin-top: 1rem;
+}
+
+.witness-signature-block {
+  border: 1px solid hsl(var(--border));
+  border-radius: 8px;
+  padding: 1.5rem;
+  background-color: hsl(var(--card));
+  page-break-inside: avoid;
+}
+
+.signature-line {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.signature-placeholder {
+  height: 60px;
+  border-bottom: 2px solid hsl(var(--border));
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  font-style: italic;
+  color: hsl(var(--muted-foreground));
+}
+
+.signature-label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: hsl(var(--foreground));
+}
+
+.witness-details {
+  font-size: 0.85rem;
+  line-height: 1.4;
+}
+
+.witness-details p {
+  margin-bottom: 0.3rem;
+  word-wrap: break-word;
+}
+
+.witness-details strong {
   color: hsl(var(--primary));
   font-weight: 600;
 }
@@ -464,72 +797,104 @@ html {
 
 /* Responsive Design for mobile devices */
 @media (max-width: 768px) {
-  .will-document {
-    padding: 10mm;
+  .will-document,
+  .will-document-ai {
+    padding: 1rem;
     font-size: 12px;
     max-width: 100%;
     margin: 0;
-    border-radius: 0;
+    border-radius: 4px;
   }
   
   .will-title {
-    font-size: 1.75rem;
+    font-size: 1.5rem;
   }
   
   .testator-name {
-    font-size: 1.1rem;
+    font-size: 1rem;
+  }
+  
+  .section-title {
+    font-size: 1rem;
   }
   
   .signature-section {
-    grid-template-columns: 1fr;
-    gap: 1.5rem;
+    margin: 2rem 0;
   }
   
-  .witness-details {
+  .witness-grid {
     grid-template-columns: 1fr;
     gap: 1rem;
+  }
+
+  .signature-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  .witness-block {
+    padding: 1rem;
+    margin-bottom: 1rem;
   }
   
   .beneficiary-table table,
   .asset-table table,
   .executor-table table,
   .witness-table table {
-    font-size: 0.8rem;
+    font-size: 0.75rem;
   }
   
   .will-section {
-    margin-bottom: 2rem;
+    margin-bottom: 1.5rem;
   }
   
   .digital-signature {
     padding: 0.75rem;
-    margin: 1.5rem 0 0.75rem 0;
+    margin: 1rem 0 0.5rem 0;
   }
   
   .digital-signature .signature-name {
-    font-size: 1rem;
+    font-size: 0.9rem;
   }
   
   .beneficiary-table,
   .asset-table,
   .executor-table,
   .witness-table {
-    font-size: 0.8rem;
+    font-size: 0.75rem;
   }
   
   .beneficiary-table th,
   .asset-table th,
   .executor-table th,
   .witness-table th {
-    padding: 0.5rem 0.25rem;
-    font-size: 0.75rem;
+    padding: 0.4rem 0.2rem;
+    font-size: 0.7rem;
   }
   
   .beneficiary-table td,
   .asset-table td,
   .executor-table td,
   .witness-table td {
-    padding: 0.5rem 0.25rem;
+    padding: 0.4rem 0.2rem;
+  }
+}
+
+/* Tablet responsive styles */
+@media (max-width: 1024px) and (min-width: 769px) {
+  .will-document,
+  .will-document-ai {
+    padding: 1.25rem;
+    font-size: 13px;
+    max-width: 100%;
+  }
+  
+  .will-title {
+    font-size: 2rem;
+  }
+  
+  .testator-name {
+    font-size: 1.25rem;
   }
 }
 
@@ -669,6 +1034,21 @@ html {
   .witness-block {
     border: 2pt solid black !important;
     background-color: white !important;
+    page-break-inside: avoid;
+  }
+  
+  .witness-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+  
+  .witness-details-block {
+    font-size: 9pt !important;
+  }
+  
+  .witness-signature-area .signature-placeholder {
+    background-color: black !important;
+    height: 1pt;
   }
   
   .will-header {
@@ -825,6 +1205,30 @@ html {
   border-top: 4px solid hsl(var(--primary));
   border-radius: 50%;
   animation: spin 1s linear infinite;
+}
+
+/* Loading overlay for will generation */
+.will-loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.will-loading-content {
+  background: hsl(var(--background));
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+  text-align: center;
+  max-width: 400px;
+  margin: 1rem;
 }
 
 @keyframes spin {

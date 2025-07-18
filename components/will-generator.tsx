@@ -1,17 +1,11 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { WillForm } from './will-form';
 import { WillDocument } from './will-document';
 import { WillData } from '@/types/will-types';
 import { Button } from './ui/button';
-import { FileText, ArrowLeft, Printer, Globe, Loader2, Download, FileDown } from 'lucide-react';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from './ui/dropdown-menu';
+import { FileText, ArrowLeft, Printer, Globe, Loader2 } from 'lucide-react';
 
 // Languages available for translation
 const languages = [
@@ -41,26 +35,34 @@ export function WillGenerator() {
   const [selectedLanguage, setSelectedLanguage] = useState('en');
   const [aiGeneratedHtml, setAiGeneratedHtml] = useState<string>('');
   const [isGenerating, setIsGenerating] = useState(false);
+  const [isInitialGenerating, setIsInitialGenerating] = useState(false);
   const [showLanguageOptions, setShowLanguageOptions] = useState(false);
-  const [hasGeminiKey, setHasGeminiKey] = useState(true); // Always show language options
 
-  useEffect(() => {
-    // No need to check Gemini key - show language options by default
-  }, []);
-
-  const handleWillSubmit = (data: WillData, language: string = 'en') => {
+  const handleWillSubmit = async (data: WillData, language: string = 'en') => {
+    setIsInitialGenerating(true);
     setWillData(data);
     setSelectedLanguage(language);
+    
+    // Simulate processing time for will generation
+    await new Promise(resolve => setTimeout(resolve, 2000));
+    
     setShowDocument(true);
-    // Always show English first, then language options
     setShowLanguageOptions(false);
     setAiGeneratedHtml('');
+    setIsInitialGenerating(false);
   };
 
   const handleLanguageTranslation = async (language: string) => {
     if (!willData) return;
     
     setSelectedLanguage(language);
+    
+    // For English, just clear AI-generated HTML to use the original stable template
+    if (language === 'en') {
+      setAiGeneratedHtml('');
+      return;
+    }
+    
     setIsGenerating(true);
     
     try {
@@ -102,52 +104,8 @@ export function WillGenerator() {
     setShowDocument(false);
   };
 
-    const handlePrint = (forcePrint: boolean = false) => {
-    if (forcePrint) {
-      // Force print dialog
-      const printContent = document.querySelector('.will-document')?.innerHTML;
-      if (!printContent) return;
-
-      const printWindow = window.open('', '_blank');
-      if (!printWindow) return;
-
-      printWindow.document.write(`
-        <html>
-          <head>
-            <title>Will Document - Print</title>
-            <link rel="stylesheet" href="/styles.css">
-            <style>
-              body { margin: 0; padding: 20px; }
-              @media print {
-                body { padding: 0; }
-              }
-            </style>
-          </head>
-          <body>
-            <div class="will-document">${printContent}</div>
-            <script>
-              window.onload = () => window.print();
-            </script>
-          </body>
-        </html>
-      `);
-
-      printWindow.document.close();
-      
-      // Close print window after delay
-      setTimeout(() => {
-        printWindow.close();
-      }, 250);
-    } else {
-      window.print();
-    }
-  };
-
-  const handleDownloadPDF = async () => {
-    if (!willData) return;
-    
-    // Simple PDF generation using browser print
-    handlePrint();
+  const handlePrint = () => {
+    window.print();
   };
 
   return (
@@ -168,8 +126,33 @@ export function WillGenerator() {
             </p>
           </div>
 
-          {!showDocument ? (
-            <WillForm onSubmit={handleWillSubmit} />
+          {!showDocument && !isInitialGenerating ? (
+            <WillForm onSubmit={handleWillSubmit} isGenerating={isInitialGenerating} />
+          ) : isInitialGenerating ? (
+            <div className="flex items-center justify-center py-20">
+              <div className="text-center max-w-md">
+                <div className="relative">
+                  <div className="animate-spin rounded-full h-16 w-16 border-4 border-primary/20 border-t-primary mx-auto mb-6"></div>
+                  <FileText className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-6 h-6 text-primary" />
+                </div>
+                <h3 className="text-xl font-semibold mb-3 text-foreground">
+                  Generating Your Will Document
+                </h3>
+                <p className="text-muted-foreground mb-4">
+                  Please wait while we create your professional will document with proper legal formatting...
+                </p>
+                <div className="bg-muted/30 rounded-lg p-4">
+                  <div className="flex items-center justify-center space-x-2 text-sm text-muted-foreground">
+                    <div className="w-2 h-2 bg-primary rounded-full animate-bounce [animation-delay:-0.3s]"></div>
+                    <div className="w-2 h-2 bg-primary rounded-full animate-bounce [animation-delay:-0.15s]"></div>
+                    <div className="w-2 h-2 bg-primary rounded-full animate-bounce"></div>
+                  </div>
+                  <p className="mt-2 text-xs text-muted-foreground">
+                    Processing your information and formatting the document...
+                  </p>
+                </div>
+              </div>
+            </div>
           ) : (
             <div className="space-y-6">
               {/* Language and Document Controls */}
@@ -185,35 +168,14 @@ export function WillGenerator() {
                       Back to Form
                     </Button>
                     
-                    {hasGeminiKey && (
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <Button 
-                            variant="outline"
-                            className="flex items-center gap-2"
-                            disabled={isGenerating}
-                          >
-                            <Globe className="h-4 w-4" />
-                            {isGenerating ? 'Translating...' : getLanguageName(selectedLanguage)}
-                          </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end" className="w-48">
-                          {languages.map((lang) => (
-                            <DropdownMenuItem
-                              key={lang.code}
-                              disabled={isGenerating || selectedLanguage === lang.code}
-                              onSelect={() => handleLanguageTranslation(lang.code)}
-                            >
-                              {lang.name}
-                            </DropdownMenuItem>
-                          ))}
-                        </DropdownMenuContent>
-                      </DropdownMenu>
-                    )}
+                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                      <span>Document Language:</span>
+                      <span className="font-semibold capitalize">{getLanguageName(selectedLanguage)}</span>
+                    </div>
                   </div>
                   
-                  <div className="flex items-center gap-2">
-                    {hasGeminiKey && selectedLanguage === 'en' && !isGenerating && (
+                  <div className="flex items-center gap-3">
+                    {selectedLanguage === 'en' && !isGenerating && (
                       <Button
                         onClick={() => setShowLanguageOptions(!showLanguageOptions)}
                         variant="outline"
@@ -237,29 +199,14 @@ export function WillGenerator() {
                         Back to English
                       </Button>
                     )}
-                    <div className="h-6 w-px bg-border" /> {/* Divider */}
-                    <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
-                        <Button
-                          variant="outline"
-                          className="flex items-center gap-2"
-                          disabled={isGenerating}
-                        >
-                          <Download className="h-4 w-4" />
-                          Download As
-                        </Button>
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent align="end">
-                        <DropdownMenuItem onClick={handleDownloadPDF}>
-                          <FileDown className="h-4 w-4 mr-2" />
-                          Download PDF
-                        </DropdownMenuItem>
-                        <DropdownMenuItem onClick={() => handlePrint()}>
-                          <Printer className="h-4 w-4 mr-2" />
-                          Print Document
-                        </DropdownMenuItem>
-                      </DropdownMenuContent>
-                    </DropdownMenu>
+                    <Button
+                      onClick={handlePrint}
+                      className="flex items-center gap-2"
+                      disabled={isGenerating}
+                    >
+                      <Printer className="w-4 h-4" />
+                      Print Document
+                    </Button>
                   </div>
                 </div>
 
@@ -298,17 +245,10 @@ export function WillGenerator() {
                         </Button>
                       ))}
                     </div>
-                    {hasGeminiKey ? (
-                      <div className="text-xs text-muted-foreground bg-muted/30 p-3 rounded-lg">
-                        <p className="font-medium mb-1">Translation Notice:</p>
-                        <p>AI translation will generate the document in your selected language. The English version will remain available.</p>
-                      </div>
-                    ) : (
-                      <div className="text-xs text-muted-foreground bg-destructive/10 p-3 rounded-lg">
-                        <p className="font-medium mb-1">Translation Unavailable</p>
-                        <p>Language translation requires a valid Gemini API key. Please configure the API key in settings to enable translations.</p>
-                      </div>
-                    )}
+                    <div className="text-xs text-muted-foreground bg-muted/30 p-3 rounded-lg">
+                      <p className="font-medium mb-1">Translation Notice:</p>
+                      <p>AI translation will generate the document in your selected language. The English version will remain available.</p>
+                    </div>
                   </div>
                 )}
               </div>
@@ -321,11 +261,11 @@ export function WillGenerator() {
                     <p className="text-muted-foreground">Generating document in {getLanguageName(selectedLanguage)}...</p>
                   </div>
                 </div>
-              ) : selectedLanguage === 'en' || !aiGeneratedHtml ? (
+              ) : selectedLanguage === 'en' && !aiGeneratedHtml ? (
                 willData && <WillDocument data={willData} />
               ) : (
                 <div 
-                  className="will-document-ai" 
+                  className="will-document" 
                   dangerouslySetInnerHTML={{ __html: aiGeneratedHtml }}
                 />
               )}

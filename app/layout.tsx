@@ -4,13 +4,14 @@ import { Inter } from 'next/font/google';
 import { ThemeProvider } from '@/providers/theme-provider';
 import { Providers } from '@/providers/providers';
 import { Toaster } from '@/components/ui/sonner';
-import { Navigation } from '@/components/navigation';
+import { ConditionalNavigation } from '@/components/conditional-navigation';
 
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'Will Generator - Create Your Legal Will',
+  title: 'Will AI - Create Your Legal Will',
   description: 'Professional will generation platform with AI assistance',
+  viewport: 'width=device-width, initial-scale=1, maximum-scale=1',
 };
 
 export default function RootLayout({
@@ -23,7 +24,7 @@ export default function RootLayout({
       <body className={inter.className}>
         <ThemeProvider defaultTheme="system">
           <Providers>
-            <Navigation />
+            <ConditionalNavigation />
             {children}
             <Toaster />
           </Providers>

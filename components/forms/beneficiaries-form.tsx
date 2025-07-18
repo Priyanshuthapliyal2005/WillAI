@@ -23,9 +23,10 @@ interface BeneficiariesFormProps {
   isLoading: boolean
   onPrevious?: () => void
   canGoBack?: boolean
+  isEditingPreviousStep?: boolean
 }
 
-export function BeneficiariesForm({ willData, onSave, isLoading, onPrevious, canGoBack }: BeneficiariesFormProps) {
+export function BeneficiariesForm({ willData, onSave, isLoading, onPrevious, canGoBack, isEditingPreviousStep }: BeneficiariesFormProps) {
   const {
     register,
     control,
@@ -184,8 +185,8 @@ export function BeneficiariesForm({ willData, onSave, isLoading, onPrevious, can
                 </>
               ) : (
                 <>
-                  Save & Continue
-                  <ChevronRight className="h-4 w-4 ml-2" />
+                  {isEditingPreviousStep ? "Save Changes" : "Save & Continue"}
+                  {!isEditingPreviousStep && <ChevronRight className="h-4 w-4 ml-2" />}
                 </>
               )}
             </Button>

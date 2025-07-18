@@ -2,7 +2,6 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
-import { willFormSchema } from '@/lib/validations/will'
 
 export async function POST(request: NextRequest) {
   try {
@@ -20,8 +19,8 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
     }
 
-    let will
-
+    let will: any = null
+    
     if (willId) {
       // Update existing will
       will = await prisma.will.findUnique({
@@ -58,6 +57,11 @@ export async function POST(request: NextRequest) {
           willId: will.id,
         },
       })
+      
+      // Update will title with testator's name
+      if (formData.testator.fullName) {
+        updateData.title = `${formData.testator.fullName}'s Will`
+      }
     }
 
     // Handle beneficiaries

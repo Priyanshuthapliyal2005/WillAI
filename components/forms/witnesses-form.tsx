@@ -23,9 +23,10 @@ interface WitnessesFormProps {
   isLoading: boolean
   onPrevious?: () => void
   canGoBack?: boolean
+  isEditingPreviousStep?: boolean
 }
 
-export function WitnessesForm({ willData, onSave, isLoading, onPrevious, canGoBack }: WitnessesFormProps) {
+export function WitnessesForm({ willData, onSave, isLoading, onPrevious, canGoBack, isEditingPreviousStep }: WitnessesFormProps) {
   const {
     register,
     control,

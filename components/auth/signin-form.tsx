@@ -52,7 +52,7 @@ export function SignInForm() {
       <CardHeader className="text-center">
         <div className="flex items-center justify-center mb-4">
           <FileText className="h-8 w-8 text-primary mr-2" />
-          <span className="text-2xl font-bold">Will Generator</span>
+          <span className="text-2xl font-bold">Will AI</span>
         </div>
         <CardTitle>Sign In</CardTitle>
         <CardDescription>

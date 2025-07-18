@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { Progress } from '@/components/ui/progress'
+// import { Progress } from '@/components/ui/progress'
 import { ChevronLeft, ChevronRight, Save } from 'lucide-react'
 import { TestatorForm } from './forms/testator-form'
 import { BeneficiariesForm } from './forms/beneficiaries-form'
@@ -95,6 +95,8 @@ export function WillFormWizard({ currentStep, willId, userId }: WillFormWizardPr
       queryClient.invalidateQueries({ queryKey: ['will', willId] })
       toast.success('Will generated successfully')
       setIsGenerating(false)
+      // Navigate to preview page after successful generation
+      router.push(`/dashboard/7${willId ? `?willId=${willId}` : ''}`)
     },
     onError: () => {
       toast.error('Failed to generate will')
@@ -107,15 +109,39 @@ export function WillFormWizard({ currentStep, willId, userId }: WillFormWizardPr
       // Save the data
       const result = await saveWillMutation.mutateAsync(data)
       
-      // If save is successful, navigate to next step
-      if (currentStep < 7) {
+      // If save is successful, navigate to next step (but not when generating)
+      if (currentStep < 7 && !isGenerating) {
         const nextStep = currentStep + 1
         const newWillId = result?.willId || willId
         router.push(`/dashboard/${nextStep}${newWillId ? `?willId=${newWillId}` : ''}`)
       }
+      
+      return result
     } catch (error) {
       console.error('Failed to save and continue:', error)
-      // Error is already shown via toast in mutation onError
+      throw error
+    }
+  }
+
+  const handleSaveOnly = async (data: any) => {
+    try {
+      // Save the data without navigating
+      const result = await saveWillMutation.mutateAsync(data)
+      return result
+    } catch (error) {
+      console.error('Failed to save:', error)
+      throw error
+    }
+  }
+
+  const handleSaveForGeneration = async (data: any) => {
+    try {
+      // Save the data without navigating
+      const result = await saveWillMutation.mutateAsync(data)
+      return result
+    } catch (error) {
+      console.error('Failed to save for generation:', error)
+      throw error
     }
   }
 
@@ -130,23 +156,43 @@ export function WillFormWizard({ currentStep, willId, userId }: WillFormWizardPr
   }
 
   const handleSave = async (data: any) => {
-    // For form submissions, we want to save AND navigate
-    await handleSaveAndContinue(data)
-  }
+    // For step 6 (review), use the generation-specific save
+    if (currentStep === 6) {
+      return await handleSaveForGeneration(data)
+    }
 
-  const handleGenerateWill = async () => {
+    // Always save and continue to the next step, regardless of editing state
+    return await handleSaveAndContinue(data);
+  };
+
+  const handleGenerateWill = async (data?: any) => {
     if (!willId) return
     setIsGenerating(true)
-    generateWillMutation.mutate()
+    
+    try {
+      // If data is provided, save it first
+      if (data) {
+        await saveWillMutation.mutateAsync(data)
+      }
+      // Then generate the will
+      generateWillMutation.mutate()
+    } catch (error) {
+      console.error('Failed to save before generation:', error)
+      setIsGenerating(false)
+    }
   }
 
   const renderStepContent = () => {
+    const currentWillStep = willData?.currentStep || 1
+    const isEditingPreviousStep = currentStep < currentWillStep
+    
     const commonProps = {
       willData,
       onSave: handleSave,
       isLoading: saveWillMutation.isPending,
       onPrevious: handlePrevious,
       canGoBack: currentStep > 1,
+      isEditingPreviousStep, // Add this to help forms understand their context
     }
 
     switch (currentStep) {
@@ -161,7 +207,7 @@ export function WillFormWizard({ currentStep, willId, userId }: WillFormWizardPr
       case 5:
         return <WitnessesForm {...commonProps} />
       case 6:
-        return <ReviewForm {...commonProps} onGenerateWill={handleGenerateWill} />
+        return <ReviewForm {...commonProps} onGenerateWill={handleGenerateWill} isGenerating={isGenerating} />
       case 7:
         return <WillPreview willId={willId} isGenerating={isGenerating} />
       default:
@@ -191,7 +237,7 @@ export function WillFormWizard({ currentStep, willId, userId }: WillFormWizardPr
               Step {currentStep} of {STEPS.length}
             </div>
           </div>
-          <Progress value={(currentStep / STEPS.length) * 100} className="mt-4" />
+          {/* Progress bar removed due to build issues */}
         </CardHeader>
       </Card>
 

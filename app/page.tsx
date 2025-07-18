@@ -4,12 +4,14 @@ import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { CheckCircle, FileText, Users, Shield, Clock, Award, Star, ChevronRight, Play } from 'lucide-react';
 import { Footer } from '@/components/footer';
+import { AuthRedirectWrapper } from '@/components/auth-redirect-wrapper';
 import Link from 'next/link';
 import Image from 'next/image';
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-background">
+    <AuthRedirectWrapper>
+      <div className="min-h-screen bg-background">
       {/* Hero Section */}
       <section className="relative py-20 px-4 bg-gradient-to-br from-green-50 to-blue-50 dark:from-green-950/20 dark:to-blue-950/20">
         <div className="container mx-auto max-w-7xl">
@@ -38,12 +40,12 @@ export default function Home() {
               </div>
 
               <div className="flex flex-col sm:flex-row gap-4">
-                <Button asChild size="lg" className="bg-green-600 hover:bg-green-700 text-white px-8 py-6 text-lg">
-                  <Link href="/dashboard/create">Start Now — It's Free</Link>
-                </Button>
-                <Button variant="outline" size="lg" className="px-8 py-6 text-lg">
-                  <Play className="w-5 h-5 mr-2" />
-                  See How It Works
+                <Button
+                  asChild
+                  size="lg"
+                  className="bg-green-600 hover:bg-green-700 text-white px-12 py-6 text-2xl font-bold shadow-lg transition-transform transform hover:scale-105 focus:ring-4 focus:ring-green-300"
+                >
+                  <Link href="/dashboard/create">Get Started</Link>
                 </Button>
               </div>
 
@@ -485,58 +487,66 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Testimonials */}
+      {/* Testimonials Marquee */}
       <section className="py-20 px-4 bg-gray-50 dark:bg-gray-900/50">
         <div className="container mx-auto max-w-7xl">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold mb-4">Trusted by Thousands of Families</h2>
             <p className="text-xl text-muted-foreground">
-              Join families across all ages who have secured their legacy with our simple, accessible will generator.
+              Join families across all ages who have secured their legacy with our simple, accessible Will AI.
             </p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8">
-            {[
-              {
-                name: "Sarah K.",
-                rating: 5,
-                text: "Finally created our will after putting it off for years. So much easier than I expected!"
-              },
-              {
-                name: "Robert K.",
-                rating: 5,
-                text: "My grandson helped me and learned a lot about this too. Very user-friendly."
-              },
-              {
-                name: "Maria L.",
-                rating: 5,
-                text: "The clear language was explained in plain English. It got complicated in every step I made."
-              }
-            ].map((testimonial, index) => (
-              <Card key={index}>
-                <CardContent className="p-6">
-                  <div className="flex mb-4">
-                    {[...Array(testimonial.rating)].map((_, i) => (
-                      <Star key={i} className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-                    ))}
+          {/* Marquee effect for testimonials */}
+          <div className="relative overflow-x-hidden">
+            <div
+              className="flex gap-6 animate-marquee hover:[animation-play-state:paused] will-change-transform"
+            >
+              {[
+                { name: "Sarah K.", rating: 5, text: "Finally created our will after putting it off for years. So much easier than I expected!" },
+                { name: "Robert K.", rating: 5, text: "My grandson helped me and learned a lot about this too. Very user-friendly." },
+                { name: "Maria L.", rating: 5, text: "The clear language was explained in plain English. It got complicated in every step I made." },
+                { name: "Jennifer L.", rating: 5, text: "Great value creation process with clear and comprehensive. Easy to make changes and ensure everything is correct." },
+                { name: "Amit S.", rating: 5, text: "I was able to create a will for my parents in Hindi and English. Very flexible and easy!" },
+                { name: "Priya D.", rating: 5, text: "The step-by-step process made it simple. I feel secure about my family's future." },
+                { name: "John M.", rating: 5, text: "I never thought making a will could be this easy. Highly recommended!" },
+                { name: "Emily R.", rating: 5, text: "The support team answered all my questions. Great experience overall." },
+                { name: "Suresh P.", rating: 5, text: "Affordable, fast, and legally sound. I tell all my friends about it." },
+                { name: "Linda W.", rating: 5, text: "I finished my will in one sitting. The peace of mind is priceless." },
+              ].concat([
+                { name: "Sarah K.", rating: 5, text: "Finally created our will after putting it off for years. So much easier than I expected!" },
+                { name: "Robert K.", rating: 5, text: "My grandson helped me and learned a lot about this too. Very user-friendly." },
+                { name: "Maria L.", rating: 5, text: "The clear language was explained in plain English. It got complicated in every step I made." },
+                { name: "Jennifer L.", rating: 5, text: "Great value creation process with clear and comprehensive. Easy to make changes and ensure everything is correct." },
+                { name: "Amit S.", rating: 5, text: "I was able to create a will for my parents in Hindi and English. Very flexible and easy!" },
+                { name: "Priya D.", rating: 5, text: "The step-by-step process made it simple. I feel secure about my family's future." },
+                { name: "John M.", rating: 5, text: "I never thought making a will could be this easy. Highly recommended!" },
+                { name: "Emily R.", rating: 5, text: "The support team answered all my questions. Great experience overall." },
+                { name: "Suresh P.", rating: 5, text: "Affordable, fast, and legally sound. I tell all my friends about it." },
+                { name: "Linda W.", rating: 5, text: "I finished my will in one sitting. The peace of mind is priceless." },
+              ])
+                .map((testimonial, index) => (
+                  <div
+                  key={index}
+                  className="min-w-[300px] sm:min-w-[340px] max-w-sm w-full flex-shrink-0"
+                >
+                    <Card className="h-full">
+                      <CardContent className="p-4 sm:p-6 flex flex-col items-center justify-center h-full">
+                        <div className="flex mb-2">
+                          {[...Array(testimonial.rating)].map((_, i) => (
+                            <Star key={i} className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+                          ))}
+                        </div>
+                        <p
+                          className="testimonial-ellipsis text-xs sm:text-sm leading-snug mb-2 italic text-center"
+                        >
+                          "{testimonial.text}"
+                        </p>
+                        <p className="text-xs sm:text-sm font-semibold text-center">{testimonial.name}</p>
+                      </CardContent>
+                    </Card>
                   </div>
-                  <p className="text-sm mb-4 italic">"{testimonial.text}"</p>
-                  <p className="text-sm font-semibold">{testimonial.name}</p>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-
-          <div className="text-center mt-12">
-            <div className="bg-green-600 text-white rounded-full px-4 py-2 inline-block mb-4">
-              <span className="text-sm font-medium">Sarah K.</span>
-            </div>
-            <blockquote className="text-xl font-medium mb-4">
-              "Finally created our will after putting it off for years. So much easier than I expected!"
-            </blockquote>
-            <div className="flex justify-center gap-2">
-              <Button variant="outline" size="sm">Robert K.</Button>
-              <Button variant="outline" size="sm">Maria L.</Button>
+                ))}
             </div>
           </div>
         </div>
@@ -584,53 +594,6 @@ export default function Home() {
           <Button asChild size="lg" className="bg-green-600 hover:bg-green-700 text-white px-12 py-6 text-xl">
             <Link href="/dashboard/create">Start Creating Your Will</Link>
           </Button>
-          
-          <p className="text-sm text-gray-400 mt-4">100% Free to Start</p>
-
-          <div className="mt-12">
-            <h3 className="text-2xl font-bold mb-6">Trusted by Thousands of Families</h3>
-            <div className="grid md:grid-cols-3 gap-6">
-              {[
-                {
-                  name: "Sarah K.",
-                  rating: "★★★★★",
-                  text: "So easy to use! Completed my will in 10 minutes and feel peace of mind knowing my family is protected."
-                },
-                {
-                  name: "Robert K.",
-                  rating: "★★★★★",
-                  text: "My father of three and this gave me peace of mind knowing my family is protected. Professional and thorough."
-                },
-                {
-                  name: "Jennifer L.",
-                  rating: "★★★★★",
-                  text: "Great value creation process with clear and comprehensive. Easy to make changes and ensure everything is correct."
-                }
-              ].map((testimonial, index) => (
-                <Card key={index} className="bg-slate-800 border-slate-700">
-                  <CardContent className="p-4">
-                    <div className="text-yellow-400 mb-2">{testimonial.rating}</div>
-                    <p className="text-sm text-gray-300 mb-3">"{testimonial.text}"</p>
-                    <p className="text-sm font-semibold text-white">{testimonial.name}</p>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </div>
-
-          <div className="mt-12 p-6 bg-red-900/20 border border-red-800 rounded-lg">
-            <h3 className="text-xl font-bold text-red-400 mb-2">Don't Wait Until It's Too Late</h3>
-            <p className="text-gray-300">
-              70% of Americans don't have a will, leaving families vulnerable to 
-              lengthy legal battles and financial hardship. Take action today.
-            </p>
-          </div>
-
-          <div className="flex justify-center gap-4 mt-8">
-            <Button variant="outline" className="border-gray-600 text-white hover:bg-gray-800">All Reviewed</Button>
-            <Button variant="outline" className="border-gray-600 text-white hover:bg-gray-800">Privacy Protected</Button>
-            <Button variant="outline" className="border-gray-600 text-white hover:bg-gray-800">Legally Required</Button>
-          </div>
         </div>
       </section>
 
@@ -642,27 +605,61 @@ export default function Home() {
           </div>
 
           <div className="space-y-4">
-            {[
-              "Is this will legally binding?",
-              "How long does it take to complete?", 
-              "What if I need to make changes later?",
-              "Is my information secure?",
-              "What happens to my document when I create it?",
-              "Do I need a lawyer to review this?",
-              "Can I use this will in any state?",
-              "What if I have complex assets?",
-              "Is this suitable for older users?",
-              "How do I print or share my will?"
-            ].map((question, index) => (
-              <Card key={index} className="hover:shadow-md transition-shadow cursor-pointer">
-                <CardContent className="p-4">
-                  <div className="flex items-center justify-between">
-                    <span className="font-medium">{question}</span>
-                    <ChevronRight className="w-5 h-5 text-muted-foreground" />
+            {/* FAQ Accordion */}
+            <div className="space-y-2">
+              {[
+                {
+                  question: "Is this will legally binding?",
+                  answer: "Yes, wills created on our platform are legally binding when properly signed and witnessed according to your state's requirements."
+                },
+                {
+                  question: "How long does it take to complete?",
+                  answer: "Most users complete their will in 10-20 minutes. The process is step-by-step and you can save your progress at any time."
+                },
+                {
+                  question: "What if I need to make changes later?",
+                  answer: "You can log in and update your will at any time. Simply make your changes and download or print the updated document."
+                },
+                {
+                  question: "Is my information secure?",
+                  answer: "Absolutely. We use bank-level encryption and never share your data. Your information is private and protected."
+                },
+                {
+                  question: "What happens to my document when I create it?",
+                  answer: "Your will is securely stored in your account. You can download, print, or share it whenever you need."
+                },
+                {
+                  question: "Do I need a lawyer to review this?",
+                  answer: "Our documents are designed to be legally valid without a lawyer, but you may consult one for extra peace of mind."
+                },
+                {
+                  question: "Can I use this will in any state?",
+                  answer: "Yes, our platform supports all 50 U.S. states and adapts to your local legal requirements."
+                },
+                {
+                  question: "What if I have complex assets?",
+                  answer: "Our platform covers most common scenarios. For highly complex estates, we recommend consulting an estate attorney."
+                },
+                {
+                  question: "Is this suitable for older users?",
+                  answer: "Yes, our interface is designed to be accessible and easy for all ages. Many seniors use our service successfully."
+                },
+                {
+                  question: "How do I print or share my will?",
+                  answer: "After completing your will, you can download a PDF or print it directly from your dashboard."
+                }
+              ].map((faq, index) => (
+                <details key={index} className="bg-white dark:bg-slate-800 rounded-lg border border-gray-200 dark:border-slate-700 p-4 group">
+                  <summary className="flex items-center justify-between cursor-pointer font-medium text-lg text-foreground group-open:text-green-600 transition-colors">
+                    {faq.question}
+                    <ChevronRight className="w-5 h-5 ml-2 text-muted-foreground group-open:rotate-90 transition-transform" />
+                  </summary>
+                  <div className="mt-3 text-muted-foreground text-base pl-1">
+                    {faq.answer}
                   </div>
-                </CardContent>
-              </Card>
-            ))}
+                </details>
+              ))}
+            </div>
           </div>
         </div>
       </section>
@@ -724,62 +721,8 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Footer CTA */}
-      <section className="py-12 px-4 bg-slate-900 text-white">
-        <div className="container mx-auto max-w-4xl text-center">
-          <p className="text-sm text-gray-400 mb-4">WestLaw.Legal.Pro</p>
-          <div className="flex justify-center gap-8 text-sm text-gray-400">
-            <span>1-855-751-5342</span>
-            <span>Email: help@westlaw.com</span>
-            <span>234 Connecticut Ave NW Suite 200, Washington, DC 20001</span>
-          </div>
-          
-          <div className="mt-8 grid md:grid-cols-4 gap-8 text-sm">
-            <div>
-              <h4 className="font-semibold text-white mb-2">Legal</h4>
-              <ul className="space-y-1 text-gray-400">
-                <li>Terms of Service</li>
-                <li>Privacy Policy</li>
-                <li>Cookie Policy</li>
-                <li>Legal Disclaimers</li>
-              </ul>
-            </div>
-            <div>
-              <h4 className="font-semibold text-white mb-2">Product</h4>
-              <ul className="space-y-1 text-gray-400">
-                <li>How It Works</li>
-                <li>Pricing</li>
-                <li>Features</li>
-                <li>Reviews</li>
-              </ul>
-            </div>
-            <div>
-              <h4 className="font-semibold text-white mb-2">Resources</h4>
-              <ul className="space-y-1 text-gray-400">
-                <li>Will Guide</li>
-                <li>Estate Planning</li>
-                <li>Legal Articles</li>
-                <li>FAQ</li>
-              </ul>
-            </div>
-            <div>
-              <h4 className="font-semibold text-white mb-2">Company</h4>
-              <ul className="space-y-1 text-gray-400">
-                <li>About Us</li>
-                <li>Contact</li>
-                <li>Careers</li>
-                <li>Press</li>
-              </ul>
-            </div>
-          </div>
-
-          <div className="mt-8 pt-8 border-t border-gray-800 text-xs text-gray-500">
-            <p>Legal Disclaimer: WestLaw Pro documents legal materials in a common repository format and uses that content only for its legitimate organizational and compliance requirements.</p>
-          </div>
-        </div>
-      </section>
-      
       <Footer />
     </div>
+    </AuthRedirectWrapper>
   );
 }

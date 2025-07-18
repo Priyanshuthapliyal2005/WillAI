@@ -16,9 +16,10 @@ interface TestatorFormProps {
   isLoading: boolean
   onPrevious?: () => void
   canGoBack?: boolean
+  isEditingPreviousStep?: boolean
 }
 
-export function TestatorForm({ willData, onSave, isLoading, onPrevious, canGoBack }: TestatorFormProps) {
+export function TestatorForm({ willData, onSave, isLoading, onPrevious, canGoBack, isEditingPreviousStep }: TestatorFormProps) {
   const {
     register,
     handleSubmit,
@@ -134,8 +135,8 @@ export function TestatorForm({ willData, onSave, isLoading, onPrevious, canGoBac
                 </>
               ) : (
                 <>
-                  Save & Continue
-                  <ChevronRight className="h-4 w-4 ml-2" />
+                  {isEditingPreviousStep ? "Save Changes" : "Save & Continue"}
+                  {!isEditingPreviousStep && <ChevronRight className="h-4 w-4 ml-2" />}
                 </>
               )}
             </Button>

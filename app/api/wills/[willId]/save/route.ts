@@ -45,6 +45,11 @@ export async function POST(
             willId,
           },
         })
+        
+        // Update will title with testator's name
+        if (formData.testator.fullName) {
+          updateData.title = `${formData.testator.fullName}'s Will`
+        }
       }
 
       // Handle beneficiaries
