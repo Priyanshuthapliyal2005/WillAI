@@ -560,10 +560,6 @@ npm run test:coverage
 - [GitHub Discussions](https://github.com/Priyanshuthapliyal2005/WillAI/discussions)
 - [Issues and Bug Reports](https://github.com/Priyanshuthapliyal2005/WillAI/issues)
 
-### Contact
-- Email: support@willai.com
-- LinkedIn: [Priyanshu Thapliyal](https://linkedin.com/in/priyanshuthapliyal)
-
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
